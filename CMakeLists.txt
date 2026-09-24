@@ -45,16 +45,21 @@ project(ImHexPlugin)
 include(ImHexSDK)
 
 # Register the plugin
-# This will configure everything you need to make your plugin work
-# Modify the arguments to your needs. Right now it defines a plugin called `example_plugin`
-# with a single source file called `example_plugin.cpp` in the `source` directory
-# By default you have access to the libimhex library to interact with ImHex
-# as well as libwolv, libromfs, libfmt and ImGui, but you can link against any libraries you want
 add_imhex_plugin(
     NAME
-        example_plugin
+        stegoooo
+    IMHEX_VERSION
+        1.38.1
     SOURCES
-        source/example_plugin.cpp
+        source/plugin_stegoooo.cpp
+        source/content/nodes/ycbcr_channels.cpp
+        source/content/nodes/rgb_channels.cpp
+        source/content/nodes/lsb.cpp
+        source/content/nodes/metrics.cpp
+        source/content/nodes/export.cpp
+        source/content/helpers/image.cpp
+        source/content/helpers/color_space.cpp
+        source/content/helpers/stego.cpp
     INCLUDES
         include
 )
