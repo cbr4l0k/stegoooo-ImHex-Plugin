@@ -1,0 +1,75 @@
+header,line,event/request,parameters,debug-log-suppressed
+events_gui.hpp,22,EventViewOpened,View*,False
+events_gui.hpp,31,EventViewClosed,View*,False
+events_gui.hpp,42,EventDPIChanged,"float, float",False
+events_gui.hpp,52,EventWindowFocused,bool,False
+events_gui.hpp,62,EventWindowClosing,GLFWwindow*,False
+events_gui.hpp,71,EventWindowDeinitializing,GLFWwindow*,False
+events_gui.hpp,78,EventOSThemeChanged,—,False
+events_gui.hpp,88,EventFrameBegin,—,True
+events_gui.hpp,93,EventFrameEnd,—,True
+events_gui.hpp,108,EventSetTaskBarIconState,"u32, u32, u32",True
+events_gui.hpp,116,EventImGuiElementRendered,"ImGuiID, const std::array<float, 4>&",True
+events_interaction.hpp,21,EventFileLoaded,std::fs::path,False
+events_interaction.hpp,34,EventDataChanged,prv::Provider *,False
+events_interaction.hpp,41,EventHighlightingChanged,—,False
+events_interaction.hpp,51,EventRegionSelected,ImHexApi::HexEditor::ProviderRegion,False
+events_interaction.hpp,58,EventThemeChanged,—,False
+events_interaction.hpp,67,EventBookmarkCreated,ImHexApi::Bookmarks::Entry&,False
+events_interaction.hpp,77,EventPatchCreated,"const u8*, u64, const PatchKind",False
+events_interaction.hpp,84,EventPatternEvaluating,—,False
+events_interaction.hpp,93,EventPatternExecuted,const std::string&,False
+events_interaction.hpp,100,EventPatternEditorChanged,const std::string&,False
+events_interaction.hpp,109,EventStoreContentDownloaded,const std::fs::path&,False
+events_interaction.hpp,120,EventStoreContentRemoved,const std::fs::path&,False
+events_interaction.hpp,130,EventAchievementUnlocked,const Achievement&,False
+events_interaction.hpp,140,EventSearchBoxClicked,u32,False
+events_interaction.hpp,149,EventFileDragged,bool,False
+events_interaction.hpp,158,EventFileDropped,std::fs::path,False
+events_lifecycle.hpp,14,EventImHexStartupFinished,—,False
+events_lifecycle.hpp,21,EventCloseButtonPressed,—,False
+events_lifecycle.hpp,28,EventImHexClosing,—,False
+events_lifecycle.hpp,35,EventFirstLaunch,—,False
+events_lifecycle.hpp,40,EventAnySettingChanged,—,False
+events_lifecycle.hpp,53,EventAbnormalTermination,int,False
+events_lifecycle.hpp,70,EventImHexUpdated,"SemanticVersion, SemanticVersion",False
+events_lifecycle.hpp,75,EventCrashRecovered,const std::exception &,False
+events_lifecycle.hpp,80,EventProjectOpened,—,False
+events_lifecycle.hpp,85,EventProjectSaved,—,False
+events_lifecycle.hpp,91,EventNativeMessageReceived,std::vector<u8>,False
+events_lifecycle.hpp,97,EventRegisterImGuiTests,ImGuiTestEngine*,False
+events_provider.hpp,18,EventProviderCreated,std::shared_ptr<prv::Provider>,False
+events_provider.hpp,28,EventProviderOpened,prv::Provider *,False
+events_provider.hpp,38,EventProviderChanged,"prv::Provider *, prv::Provider *",False
+events_provider.hpp,45,EventProviderSaved,prv::Provider *,False
+events_provider.hpp,56,EventProviderClosing,"prv::Provider *, bool *",False
+events_provider.hpp,66,EventProviderClosed,prv::Provider *,False
+events_provider.hpp,75,EventProviderDeleted,prv::Provider *,False
+events_provider.hpp,88,EventProviderDirtied,prv::Provider *,False
+events_provider.hpp,97,EventProviderDataInserted,"prv::Provider *, u64, u64",False
+events_provider.hpp,107,EventProviderDataModified,"prv::Provider *, u64, u64, const u8*",False
+events_provider.hpp,116,EventProviderDataRemoved,"prv::Provider *, u64, u64",False
+requests_gui.hpp,13,RequestOpenWindow,std::string,False
+requests_gui.hpp,21,RequestUpdateWindowTitle,—,False
+requests_gui.hpp,28,RequestChangeTheme,std::string,False
+requests_gui.hpp,35,RequestOpenPopup,std::string,False
+requests_gui.hpp,43,RequestSetPostProcessingShader,"std::string, std::string",False
+requests_interaction.hpp,21,RequestHexEditorSelectionChange,ImHexApi::HexEditor::ProviderRegion,False
+requests_interaction.hpp,31,RequestPatternEditorSelectionChange,"u32, u32",False
+requests_interaction.hpp,41,RequestJumpToPattern,const pl::ptrn::Pattern*,False
+requests_interaction.hpp,52,RequestAddBookmark,"Region, std::string, std::string, color_t, u64*",False
+requests_interaction.hpp,59,RequestRemoveBookmark,u64,False
+requests_interaction.hpp,69,RequestSetPatternLanguageCode,std::string,False
+requests_interaction.hpp,75,RequestTriggerPatternEvaluation,—,False
+requests_interaction.hpp,82,RequestOpenFile,std::fs::path,False
+requests_interaction.hpp,91,RequestAddVirtualFile,"std::fs::path, std::vector<u8>, Region",False
+requests_interaction.hpp,96,RequestOpenCommandPalette,—,False
+requests_lifecycle.hpp,18,RequestAddInitTask,"std::string, bool, std::function<bool()>",False
+requests_lifecycle.hpp,30,RequestAddExitTask,"std::string, std::function<bool()>",False
+requests_lifecycle.hpp,40,RequestCloseImHex,bool,False
+requests_lifecycle.hpp,50,RequestRestartImHex,—,False
+requests_lifecycle.hpp,57,RequestInitThemeHandlers,—,False
+requests_lifecycle.hpp,71,SendMessageToMainInstance,"const std::string, const std::vector<u8>&",False
+requests_provider.hpp,11,RequestCreateProvider,"std::string, bool, bool, std::shared_ptr<hex::prv::Provider> *",False
+requests_provider.hpp,16,RequestOpenProvider,std::shared_ptr<prv::Provider>,False
+requests_provider.hpp,25,MovePerProviderData,"prv::Provider *, prv::Provider *",False

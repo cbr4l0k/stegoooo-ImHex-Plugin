@@ -1,0 +1,96 @@
+header,lines,purpose,namespaces,notable types/events
+lib/libimhex/include/hex/api/achievement_manager.hpp,413,"Achievement registration, progress and dependencies.",,AchievementManager; Achievement; AchievementNode
+lib/libimhex/include/hex/api/content_registry/background_services.hpp,22,Content Registry extension point for background services.,ContentRegistry::BackgroundServices; impl,
+lib/libimhex/include/hex/api/content_registry/command_palette.hpp,104,Content Registry extension point for command palette.,ContentRegistry::CommandPalette; impl,Type; QueryResult; Entry; Handler; ContentDisplay
+lib/libimhex/include/hex/api/content_registry/communication_interface.hpp,25,Content Registry extension point for communication interface.,ContentRegistry::CommunicationInterface; impl,
+lib/libimhex/include/hex/api/content_registry/data_formatter.hpp,73,Content Registry extension point for data formatter.,prv; ContentRegistry::DataFormatter; impl,ExportMenuEntry; FindOccurrence; DecodeType; FindExporterEntry
+lib/libimhex/include/hex/api/content_registry/data_information.hpp,81,Content Registry extension point for data information.,prv; ContentRegistry::DataInformation; impl,InformationSection
+lib/libimhex/include/hex/api/content_registry/data_inspector.hpp,80,Content Registry extension point for data inspector.,ContentRegistry::DataInspector; impl,NumberDisplayStyle; Entry
+lib/libimhex/include/hex/api/content_registry/data_processor.hpp,64,Content Registry extension point for data processor.,dp; ContentRegistry::DataProcessor; impl,Entry
+lib/libimhex/include/hex/api/content_registry/diffing.hpp,68,Content Registry extension point for diffing.,prv; ContentRegistry::Diffing; impl,DifferenceType; Algorithm
+lib/libimhex/include/hex/api/content_registry/disassemblers.hpp,64,Content Registry extension point for disassemblers.,ContentRegistry::Disassemblers; impl,Instruction; Architecture
+lib/libimhex/include/hex/api/content_registry/experiments.hpp,36,Content Registry extension point for experiments.,ContentRegistry::Experiments; impl,Experiment
+lib/libimhex/include/hex/api/content_registry/file_type_handler.hpp,37,Content Registry extension point for file type handler.,ContentRegistry::FileTypeHandler; impl,Entry
+lib/libimhex/include/hex/api/content_registry/hashes.hpp,91,Content Registry extension point for hashes.,prv; ContentRegistry::Hashes; impl,Hash; Function
+lib/libimhex/include/hex/api/content_registry/hex_editor.hpp,91,Content Registry extension point for hex editor.,ContentRegistry::HexEditor; impl,DataVisualizer; MiniMapVisualizer
+lib/libimhex/include/hex/api/content_registry/pattern_language.hpp,155,Content Registry extension point for pattern language.,prv; ContentRegistry::PatternLanguage; impl,FunctionDefinition; TypeDefinition; Visualizer
+lib/libimhex/include/hex/api/content_registry/provider.hpp,54,Content Registry extension point for provider.,ContentRegistry::Provider; impl,Entry
+lib/libimhex/include/hex/api/content_registry/reports.hpp,34,Content Registry extension point for reports.,prv; ContentRegistry::Reports; impl,ReportGenerator
+lib/libimhex/include/hex/api/content_registry/settings.hpp,345,Content Registry extension point for settings.,ContentRegistry::Settings; Widgets; impl,Widget; Interface; Checkbox; SliderInteger; SliderFloat; SliderDataSize; ColorPicker; DropDown; TextBox; FilePicker; Label; Entry; SubCategory; Category; SettingsValue
+lib/libimhex/include/hex/api/content_registry/tools.hpp,37,Content Registry extension point for tools.,ContentRegistry::Tools; impl,Entry
+lib/libimhex/include/hex/api/content_registry/user_interface.hpp,291,Content Registry extension point for user interface.,ContentRegistry::UserInterface; impl,Icon; MainMenuItem; MenuItem; SidebarItem; TitleBarButton; WelcomeScreenQuickSettingsToggle
+lib/libimhex/include/hex/api/content_registry/views.hpp,63,Content Registry extension point for views.,ContentRegistry::Views; impl,
+lib/libimhex/include/hex/api/event_manager.hpp,218,"Typed event bus, subscription, unsubscription and posting.",impl,event_name; EventId; EventBase; Event; EventManager
+lib/libimhex/include/hex/api/events/events_gui.hpp,118,Built-in event type declarations.,hex,GLFWwindow; EventViewOpened; EventViewClosed; EventDPIChanged; EventWindowFocused; EventWindowClosing; EventWindowDeinitializing; EventOSThemeChanged; EventFrameBegin; EventFrameEnd; EventSetTaskBarIconState; EventImGuiElementRendered
+lib/libimhex/include/hex/api/events/events_interaction.hpp,160,Built-in event type declarations.,hex,EventFileLoaded; EventDataChanged; EventHighlightingChanged; EventRegionSelected; EventThemeChanged; EventBookmarkCreated; EventPatchCreated; EventPatternEvaluating; EventPatternExecuted; EventPatternEditorChanged; EventStoreContentDownloaded; EventStoreContentRemoved; EventAchievementUnlocked; EventSearchBoxClicked; EventFileDragged; EventFileDropped
+lib/libimhex/include/hex/api/events/events_lifecycle.hpp,99,Built-in event type declarations.,hex,ImGuiTestEngine; EventImHexStartupFinished; EventCloseButtonPressed; EventImHexClosing; EventFirstLaunch; EventAnySettingChanged; EventAbnormalTermination; EventImHexUpdated; EventCrashRecovered; EventProjectOpened; EventProjectSaved; EventNativeMessageReceived; EventRegisterImGuiTests
+lib/libimhex/include/hex/api/events/events_provider.hpp,118,Built-in event type declarations.,hex; prv,Provider; EventProviderCreated; EventProviderOpened; EventProviderChanged; EventProviderSaved; EventProviderClosing; EventProviderClosed; EventProviderDeleted; EventProviderDirtied; EventProviderDataInserted; EventProviderDataModified; EventProviderDataRemoved
+lib/libimhex/include/hex/api/events/requests_gui.hpp,44,Built-in request/message event declarations.,hex,RequestOpenWindow; RequestUpdateWindowTitle; RequestChangeTheme; RequestOpenPopup; RequestSetPostProcessingShader
+lib/libimhex/include/hex/api/events/requests_interaction.hpp,98,Built-in request/message event declarations.,pl::ptrn; hex,RequestHexEditorSelectionChange; RequestPatternEditorSelectionChange; RequestJumpToPattern; RequestAddBookmark; RequestRemoveBookmark; RequestSetPatternLanguageCode; RequestTriggerPatternEvaluation; RequestOpenFile; RequestAddVirtualFile; RequestOpenCommandPalette
+lib/libimhex/include/hex/api/events/requests_lifecycle.hpp,73,Built-in request/message event declarations.,hex,RequestAddInitTask; RequestAddExitTask; RequestCloseImHex; RequestRestartImHex; RequestInitThemeHandlers; SendMessageToMainInstance
+lib/libimhex/include/hex/api/events/requests_provider.hpp,27,Built-in request/message event declarations.,hex,RequestCreateProvider; RequestOpenProvider; MovePerProviderData
+lib/libimhex/include/hex/api/imhex_api/bookmarks.hpp,52,Runtime `ImHexApi` functions for bookmarks.,ImHexApi::Bookmarks,Entry
+lib/libimhex/include/hex/api/imhex_api/fonts.hpp,77,Runtime `ImHexApi` functions for fonts.,ImHexApi::Fonts; impl,ImFont; Offset; MergeFont; Font; FontDefinition
+lib/libimhex/include/hex/api/imhex_api/hex_editor.hpp,228,Runtime `ImHexApi` functions for hex editor.,prv; ImHexApi::HexEditor; impl,Highlighting; Tooltip; ProviderRegion
+lib/libimhex/include/hex/api/imhex_api/messaging.hpp,33,Runtime `ImHexApi` functions for messaging.,ImHexApi::Messaging; impl,
+lib/libimhex/include/hex/api/imhex_api/provider.hpp,128,Runtime `ImHexApi` functions for provider.,ImHexApi::Provider; impl,
+lib/libimhex/include/hex/api/imhex_api/system.hpp,389,Runtime `ImHexApi` functions for system.,impl; ImHexApi::System,ImVec2; ImFontAtlas; GLFWwindow; AutoResetBase; ProgramArguments; InitialWindowProperties; TaskProgressState; TaskProgressType; LinuxDistro; UpdateType
+lib/libimhex/include/hex/api/layout_manager.hpp,102,"Persist, load and manage ImGui layouts.",,ImGuiTextBuffer; LayoutManager; Layout
+lib/libimhex/include/hex/api/localization_manager.hpp,172,"Localization, `UnlocalizedString`, `Lang`, languages.",LocalizationManager; fmt,UnlocalizedString; PathEntry; LanguageDefinition; LangConst; Lang; std
+lib/libimhex/include/hex/api/plugin_manager.hpp,151,"Runtime plugin objects, metadata and plugin loading/management.",,ImGuiContext; SubCommand; Type; Feature; PluginFunctions; Plugin; PluginManager
+lib/libimhex/include/hex/api/project_file_manager.hpp,121,"Project-file load/store handlers, including per-provider state.",prv,Provider; ProjectFile; Handler; ProviderHandler
+lib/libimhex/include/hex/api/shortcut_manager.hpp,172,Global/view shortcuts and key combinations.,,ImGuiWindow; KeyEquivalent; View; Key; Shortcut; ShortcutManager; ShortcutEntry
+lib/libimhex/include/hex/api/task_manager.hpp,255,"Foreground, background and blocking tasks with progress/interruption.",,TaskHolder; TaskManager; Task; TaskInterruptor
+lib/libimhex/include/hex/api/theme_manager.hpp,91,"Theme loading, color/style handlers and accent color.",,ThemeManager; Style; ThemeHandler; StyleHandler
+lib/libimhex/include/hex/api/tutorial_manager.hpp,184,Interactive tutorials and contextual help.,,TutorialManager; Position; Tutorial; Step; Highlight; Message
+lib/libimhex/include/hex/api/workspace_manager.hpp,39,Workspace create/switch/import/export management.,,WorkspaceManager; Workspace
+lib/libimhex/include/hex/api_urls.hpp,4,SDK header.,,
+lib/libimhex/include/hex/data_processor/attribute.hpp,74,Typed Data Processor input/output ports.,hex::dp,Node; Attribute; Type; IOType
+lib/libimhex/include/hex/data_processor/link.hpp,24,Connections between Data Processor attributes.,hex::dp,Link
+lib/libimhex/include/hex/data_processor/node.hpp,111,Base class for Data Processor nodes.,hex::prv; hex::dp,Provider; Overlay; Node; NodeError
+lib/libimhex/include/hex/helpers/auto_reset.hpp,102,Helper utilities for auto reset.,hex; impl,AutoResetBase; AutoReset
+lib/libimhex/include/hex/helpers/binary_pattern.hpp,30,Binary-pattern helper.,hex,BinaryPattern; Pattern
+lib/libimhex/include/hex/helpers/concepts.hpp,23,Helper utilities for concepts.,hex,always_false; ICloneable
+lib/libimhex/include/hex/helpers/crypto.hpp,69,Cryptographic helper functions.,hex::prv; hex::crypt,Provider; AESMode; KeyLength
+lib/libimhex/include/hex/helpers/debugging.hpp,56,Helper utilities for debugging.,hex::trace; hex::dbg; impl,StackTraceResult
+lib/libimhex/include/hex/helpers/default_paths.hpp,116,ImHex default/search paths.,hex::paths; impl,DefaultPath; ConfigPath; DataPath; PluginPath
+lib/libimhex/include/hex/helpers/encoding_file.hpp,55,Encoding-file support.,hex,EncodingFile; Type
+lib/libimhex/include/hex/helpers/fmt.hpp,12,Helper utilities for fmt.,,
+lib/libimhex/include/hex/helpers/fs.hpp,36,Filesystem helpers.,,DialogMode; ItemFilter
+lib/libimhex/include/hex/helpers/http_requests.hpp,159,HTTP request abstraction.,hex,HttpRequest; ResultBase; Result
+lib/libimhex/include/hex/helpers/http_requests_emscripten.hpp,79,Helper utilities for http requests emscripten.,hex,
+lib/libimhex/include/hex/helpers/http_requests_native.hpp,95,Helper utilities for http requests native.,hex; impl,
+lib/libimhex/include/hex/helpers/keys.hpp,124,Helper utilities for keys.,,Keys
+lib/libimhex/include/hex/helpers/literals.hpp,23,Helper utilities for literals.,hex::literals,
+lib/libimhex/include/hex/helpers/logger.hpp,134,Logging API.,impl; color,LogEntry
+lib/libimhex/include/hex/helpers/magic.hpp,42,Magic/signature helpers.,hex::prv; hex::magic,Provider; FoundPattern
+lib/libimhex/include/hex/helpers/menu_items.hpp,25,Helper utilities for menu items.,hex::menu,
+lib/libimhex/include/hex/helpers/opengl.hpp,1106,OpenGL helpers and texture/shader abstractions.,hex::gl; impl,Vector; Matrix; RotationSequence; MatrixElements; Shader; BufferType; Buffer; VertexArray; Texture; FrameBuffer; AxesVectors; AxesBuffers; GridVectors; GridBuffers; LightSourceVectors; LightSourceBuffers
+lib/libimhex/include/hex/helpers/patches.hpp,47,Patch-related helpers.,hex; prv,Provider; IPSError; PatchKind; Patches
+lib/libimhex/include/hex/helpers/scaling.hpp,12,Helper utilities for scaling.,hex,
+lib/libimhex/include/hex/helpers/semantic_version.hpp,37,Semantic-version representation.,,SemanticVersion
+lib/libimhex/include/hex/helpers/tar.hpp,62,TAR archive helper.,hex,mtar_t; Tar; Mode
+lib/libimhex/include/hex/helpers/types.hpp,83,Core helper types.,hex,Region; NonNull
+lib/libimhex/include/hex/helpers/udp_server.hpp,59,UDP server helper.,hex,UDPServer
+lib/libimhex/include/hex/helpers/utils.hpp,398,Helper utilities for utils.,hex; prv,Provider; SizeTypeImpl
+lib/libimhex/include/hex/helpers/utils_linux.hpp,9,Helper utilities for utils linux.,hex,
+lib/libimhex/include/hex/helpers/utils_macos.hpp,37,Helper utilities for utils macos.,,GLFWwindow
+lib/libimhex/include/hex/plugin.hpp,169,"Plugin entry-point macros (`IMHEX_PLUGIN_SETUP`, library setup, features).",,PluginFunctionHelperInstantiation; PluginFeatureFunctionHelper; PluginSubCommandsFunctionHelper
+lib/libimhex/include/hex/providers/buffered_reader.hpp,26,Buffered reading helper for providers.,hex::prv,ProviderReader
+lib/libimhex/include/hex/providers/cached_provider.hpp,59,Provider caching wrapper/base.,hex::prv,CachedProvider; Block
+lib/libimhex/include/hex/providers/memory_provider.hpp,54,In-memory provider implementation.,hex::prv,MemoryProvider
+lib/libimhex/include/hex/providers/overlay.hpp,24,Provider overlays.,hex::prv,Overlay
+lib/libimhex/include/hex/providers/provider.hpp,358,Abstract data-provider interface and common provider behavior.,hex::prv,IProviderLoadInterface; IProviderSidebarInterface; IProviderFilePicker; IProviderMenuItems; MenuEntry; IProviderDataDescription; Description; Provider; OpenResult
+lib/libimhex/include/hex/providers/provider_data.hpp,154,Per-provider data storage helpers.,hex; prv,Provider; PerProvider
+lib/libimhex/include/hex/providers/undo_redo/operations/operation.hpp,31,Undo/redo API.,hex::prv; hex::prv::undo,Provider; Operation
+lib/libimhex/include/hex/providers/undo_redo/operations/operation_group.hpp,70,Undo/redo API.,hex::prv::undo,OperationGroup
+lib/libimhex/include/hex/providers/undo_redo/stack.hpp,66,Undo/redo API.,hex::prv; hex::prv::undo,Provider; Stack
+lib/libimhex/include/hex/subcommands/subcommands.hpp,32,Command-line subcommand support.,hex::subcommands,
+lib/libimhex/include/hex/test/test_provider.hpp,62,Testing support exposed by the SDK.,hex::test,TestProvider
+lib/libimhex/include/hex/test/tests.hpp,148,Testing support exposed by the SDK.,hex::test,Test; Tests; TestSequence; TestSequenceExecutor; ImGuiTestSequence; ImGuiTestSequenceExecutor
+lib/libimhex/include/hex/ui/banner.hpp,56,Banner UI helper.,hex; impl,BannerBase; Banner
+lib/libimhex/include/hex/ui/imgui_imhex_extensions.h,395,ImHex-specific ImGui extensions.,ImGuiExt; ImGui,ImGuiCustomCol; ImGuiCustomStyle; Texture; Filter; ImHexCustomData; Styles; ImGuiTestEngine
+lib/libimhex/include/hex/ui/popup.hpp,87,Popup helpers.,hex; impl,PopupBase; Popup
+lib/libimhex/include/hex/ui/toast.hpp,62,Toast notifications.,hex; impl,ToastBase; Toast
+lib/libimhex/include/hex/ui/view.hpp,222,View/window abstraction used for plugin UI.,hex,View; Window; Special; Floating; Scrolling; Modal; FullScreen
+lib/libimhex/include/hex/ui/widgets.hpp,62,Reusable ImHex UI widgets.,hex::ui,SearchableWidget

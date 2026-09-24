@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ImHex 1.38.1 C++ Plugin/API Guide</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">
+:root { color-scheme: light dark; --bg:#ffffff; --fg:#1d2329; --muted:#5e6b75; --code:#f4f6f8; --border:#d8dee4; --accent:#3569b7; }
+@media (prefers-color-scheme: dark) { :root { --bg:#101418; --fg:#e8edf2; --muted:#a5b0ba; --code:#191f25; --border:#303840; --accent:#82b1ff; } }
+html { scroll-behavior:smooth; } body { max-width: 1100px; margin: 0 auto; padding: 2rem 3rem 5rem; font: 16px/1.58 system-ui, -apple-system, Segoe UI, sans-serif; background:var(--bg); color:var(--fg); }
+a { color:var(--accent); } h1,h2,h3,h4 { line-height:1.2; margin-top:1.8em; } h1 { border-bottom:1px solid var(--border); padding-bottom:.5rem; }
+code { background:var(--code); padding:.12em .32em; border-radius:4px; } pre { background:var(--code); padding:1rem; overflow:auto; border:1px solid var(--border); border-radius:8px; } pre code { padding:0; }
+table { width:100%; border-collapse:collapse; margin:1rem 0 2rem; font-size:.92rem; } th,td { border:1px solid var(--border); padding:.5rem .65rem; text-align:left; vertical-align:top; } th { background:var(--code); }
+blockquote { border-left:4px solid var(--accent); margin-left:0; padding:.1rem 1rem; color:var(--muted); }
+#TOC { border:1px solid var(--border); padding:1rem 1.25rem; border-radius:8px; background:var(--code); } #TOC ul { margin:.3rem 0; }
+@media (max-width:700px) { body { padding:1rem; } table { display:block; overflow-x:auto; } }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ImHex 1.38.1 C++ Plugin/API Guide</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#imhex-1.38.1-c-pluginapi-guide" id="toc-imhex-1.38.1-c-pluginapi-guide">ImHex 1.38.1 C++ Plugin/API
+Guide</a>
+<ul>
+<li><a href="#contents" id="toc-contents">Contents</a></li>
+<li><a href="#how-to-use-this-guide" id="toc-how-to-use-this-guide">1.
+How to use this guide</a>
+<ul>
+<li><a href="#public-surface-vs.-impl" id="toc-public-surface-vs.-impl">Public surface
+vs. <code>impl</code></a></li>
+</ul></li>
+<li><a href="#api-map" id="toc-api-map">2. API map</a>
+<ul>
+<li><a href="#content-registry-extension-points" id="toc-content-registry-extension-points">Content Registry extension
+points</a></li>
+<li><a href="#runtime-apis" id="toc-runtime-apis">Runtime APIs</a></li>
+</ul></li>
+<li><a href="#plugin-entry-points" id="toc-plugin-entry-points">3.
+Plugin entry points</a>
+<ul>
+<li><a href="#plugin-manager-types" id="toc-plugin-manager-types">Plugin-manager types</a></li>
+</ul></li>
+<li><a href="#data-processor-api" id="toc-data-processor-api">4. Data
+Processor API</a>
+<ul>
+<li><a href="#dpattribute" id="toc-dpattribute">4.1
+<code>dp::Attribute</code></a></li>
+<li><a href="#dpnode" id="toc-dpnode">4.2 <code>dp::Node</code></a></li>
+<li><a href="#attribute-indices" id="toc-attribute-indices">4.3
+Attribute indices</a></li>
+<li><a href="#registering-a-node-the-correct-1.38.1-api" id="toc-registering-a-node-the-correct-1.38.1-api">4.4 Registering a
+node — <strong>the correct 1.38.1 API</strong></a></li>
+<li><a href="#complete-scalar-rgb-ycbcr-node" id="toc-complete-scalar-rgb-ycbcr-node">4.5 Complete scalar RGB → YCbCr
+node</a></li>
+<li><a href="#buffer-nodes" id="toc-buffer-nodes">4.6 Buffer
+nodes</a></li>
+</ul></li>
+<li><a href="#content-registry" id="toc-content-registry">5. Content
+Registry</a>
+<ul>
+<li><a href="#registry-overview" id="toc-registry-overview">Registry
+overview</a></li>
+<li><a href="#views" id="toc-views">5.1 Views</a></li>
+<li><a href="#user-interface-registration" id="toc-user-interface-registration">5.2 User interface
+registration</a></li>
+<li><a href="#settings" id="toc-settings">5.3 Settings</a></li>
+<li><a href="#pattern-language" id="toc-pattern-language">5.4 Pattern
+Language</a></li>
+<li><a href="#providers" id="toc-providers">5.5 Providers</a></li>
+<li><a href="#hex-editor-visualizers" id="toc-hex-editor-visualizers">5.6 Hex-editor visualizers</a></li>
+</ul></li>
+<li><a href="#imhexapi-runtime-services" id="toc-imhexapi-runtime-services">6. ImHexApi runtime services</a>
+<ul>
+<li><a href="#current-provider" id="toc-current-provider">6.1 Current
+provider</a></li>
+<li><a href="#hex-editor" id="toc-hex-editor">6.2 Hex Editor</a></li>
+<li><a href="#bookmarks" id="toc-bookmarks">6.3 Bookmarks</a></li>
+<li><a href="#system-api" id="toc-system-api">6.4 System API</a></li>
+</ul></li>
+<li><a href="#events-and-requests" id="toc-events-and-requests">7.
+Events and requests</a>
+<ul>
+<li><a href="#token-based-subscription" id="toc-token-based-subscription">Token-based subscription</a></li>
+<li><a href="#built-in-eventrequest-catalog" id="toc-built-in-eventrequest-catalog">Built-in event/request
+catalog</a></li>
+</ul></li>
+<li><a href="#providers-1" id="toc-providers-1">8. Providers</a>
+<ul>
+<li><a href="#provider-base-class" id="toc-provider-base-class">8.1
+Provider base class</a></li>
+<li><a href="#provider-registration-vs-provider-instances" id="toc-provider-registration-vs-provider-instances">8.2 Provider
+registration vs provider instances</a></li>
+<li><a href="#other-provider-headers" id="toc-other-provider-headers">8.3 Other provider headers</a></li>
+</ul></li>
+<li><a href="#views-and-ui" id="toc-views-and-ui">9. Views and UI</a>
+<ul>
+<li><a href="#hexview" id="toc-hexview">9.1
+<code>hex::View</code></a></li>
+<li><a href="#shortcuts" id="toc-shortcuts">9.2 Shortcuts</a></li>
+</ul></li>
+<li><a href="#managers" id="toc-managers">10. Managers</a>
+<ul>
+<li><a href="#taskmanager" id="toc-taskmanager">TaskManager</a></li>
+<li><a href="#thememanager" id="toc-thememanager">ThemeManager</a></li>
+<li><a href="#projectfile" id="toc-projectfile">ProjectFile</a></li>
+<li><a href="#layoutmanager" id="toc-layoutmanager">LayoutManager</a></li>
+<li><a href="#workspacemanager" id="toc-workspacemanager">WorkspaceManager</a></li>
+<li><a href="#tutorialmanager-achievementmanager" id="toc-tutorialmanager-achievementmanager">TutorialManager /
+AchievementManager</a></li>
+</ul></li>
+<li><a href="#localization" id="toc-localization">11.
+Localization</a></li>
+<li><a href="#cmakeplugin-build-api" id="toc-cmakeplugin-build-api">12.
+CMake/plugin build API</a></li>
+<li><a href="#practical-examples" id="toc-practical-examples">13.
+Practical examples</a>
+<ul>
+<li><a href="#the-key-fix-to-our-earlier-ycbcr-attempt" id="toc-the-key-fix-to-our-earlier-ycbcr-attempt">The key fix to our
+earlier YCbCr attempt</a></li>
+</ul></li>
+<li><a href="#debugging-api-version-mismatches" id="toc-debugging-api-version-mismatches">14. Debugging API-version
+mismatches</a>
+<ul>
+<li><a href="#missing-header" id="toc-missing-header">Missing
+header</a></li>
+<li><a href="#find-the-current-registration-namespace" id="toc-find-the-current-registration-namespace">Find the current
+registration namespace</a></li>
+<li><a href="#find-a-class-and-all-call-sites-available-in-headers" id="toc-find-a-class-and-all-call-sites-available-in-headers">Find a
+class and all call sites available in headers</a></li>
+<li><a href="#check-plugin-build-compatibility" id="toc-check-plugin-build-compatibility">Check plugin build
+compatibility</a></li>
+</ul></li>
+<li><a href="#complete-header-atlas" id="toc-complete-header-atlas">15.
+Complete header atlas</a></li>
+<li><a href="#source-of-truth-note" id="toc-source-of-truth-note">Source-of-truth note</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="imhex-1.38.1-c-pluginapi-guide">ImHex 1.38.1 C++ Plugin/API
+Guide</h1>
+<p><strong>Source basis:</strong> the exact SDK header bundle you
+supplied (<code>imhex-1.38.1-sdk-headers.tar.gz</code>).<br />
+<strong>Coverage:</strong> 95 public SDK header files under
+<code>lib/libimhex/include/hex</code>, plus the shipped CMake plugin
+macro.<br />
+<strong>Target version:</strong> ImHex <strong>1.38.1</strong>. This
+guide intentionally does not substitute older ImHex API names when the
+1.38.1 headers differ.</p>
+<blockquote>
+<p>This is a practical developer reference built from the SDK headers
+themselves. It documents what the headers expose; behavior that is only
+implemented in <code>.cpp</code> files is not claimed unless the header
+comments state it.</p>
+</blockquote>
+<h2 id="contents">Contents</h2>
+<ol type="1">
+<li><a href="#1-how-to-use-this-guide">How to use this guide</a></li>
+<li><a href="#2-api-map">API map</a></li>
+<li><a href="#3-plugin-entry-points">Plugin entry points</a></li>
+<li><a href="#4-data-processor-api">Data Processor API</a></li>
+<li><a href="#5-content-registry">Content Registry</a></li>
+<li><a href="#6-imhexapi-runtime-services">ImHexApi runtime
+services</a></li>
+<li><a href="#7-events-and-requests">Events and requests</a></li>
+<li><a href="#8-providers">Providers</a></li>
+<li><a href="#9-views-and-ui">Views and UI</a></li>
+<li><a href="#10-managers">Managers</a></li>
+<li><a href="#11-localization">Localization</a></li>
+<li><a href="#12-cmakeplugin-build-api">CMake/plugin build API</a></li>
+<li><a href="#13-practical-examples">Practical examples</a></li>
+<li><a href="#14-debugging-api-version-mismatches">Debugging API-version
+mismatches</a></li>
+<li><a href="#15-complete-header-atlas">Complete header atlas</a></li>
+</ol>
+<hr />
+<h2 id="how-to-use-this-guide">1. How to use this guide</h2>
+<p>ImHex 1.38.1 does not expose its plugin API through one monolithic
+<code>content_registry.hpp</code>. The SDK is split by subsystem. For
+example, a Data Processor plugin needs:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/plugin.hpp&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/api/content_registry/data_processor.hpp&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/data_processor/node.hpp&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/data_processor/attribute.hpp&gt;</span></span></code></pre></div>
+<p>The important rule is: <strong>include the subsystem header you
+actually use</strong>. The SDK you supplied contains
+<code>hex/api/content_registry/</code> as a directory with 20 separate
+registry headers.</p>
+<p>Useful local searches:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">SDK</span><span class="op">=</span>~/ImHex/sdk-install/usr/local/share/imhex/sdk/lib/libimhex/include</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Find a symbol</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rg</span> <span class="at">-n</span> <span class="st">&#39;DataProcessor::|class Node|EVENT_DEF&#39;</span> <span class="st">&quot;</span><span class="va">$SDK</span><span class="st">/hex&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Find headers containing a class/function name</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">rg</span> <span class="at">-l</span> <span class="st">&#39;TaskManager&#39;</span> <span class="st">&quot;</span><span class="va">$SDK</span><span class="st">/hex&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># List the registry surface</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">fd</span> . <span class="st">&quot;</span><span class="va">$SDK</span><span class="st">/hex/api/content_registry&quot;</span></span></code></pre></div>
+<h3 id="public-surface-vs.-impl">Public surface
+vs. <code>impl</code></h3>
+<p>Many headers expose a nested <code>impl</code> namespace alongside
+higher-level registration functions. As a practical compatibility rule,
+prefer the non-<code>impl</code> API when it exists. <code>impl</code>
+symbols are useful for understanding the SDK and sometimes are the only
+exposed hook, but their name signals a lower-level surface and they are
+more likely to change between versions.</p>
+<hr />
+<h2 id="api-map">2. API map</h2>
+<p>The SDK is organized around four ideas:</p>
+<pre class="text"><code>plugin.hpp
+   │
+   ├── ContentRegistry::*   -&gt; register new things in ImHex
+   │      ├── DataProcessor
+   │      ├── Views
+   │      ├── UserInterface
+   │      ├── Provider
+   │      └── ...
+   │
+   ├── ImHexApi::*          -&gt; interact with the running application
+   │      ├── Provider
+   │      ├── HexEditor
+   │      ├── System
+   │      └── ...
+   │
+   ├── EventManager/events  -&gt; react to or request application events
+   │
+   └── Core abstractions
+          ├── dp::Node / Attribute
+          ├── prv::Provider
+          ├── View
+          └── managers/helpers</code></pre>
+<h3 id="content-registry-extension-points">Content Registry extension
+points</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Namespace</th>
+<th>Header</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BackgroundServices</td>
+<td><code>background_services.hpp</code></td>
+<td>Register periodic/background service callbacks.</td>
+</tr>
+<tr class="even">
+<td>CommandPalette</td>
+<td><code>command_palette.hpp</code></td>
+<td>Commands, handlers, query results and custom command-palette
+content.</td>
+</tr>
+<tr class="odd">
+<td>CommunicationInterface</td>
+<td><code>communication_interface.hpp</code></td>
+<td>Register JSON network endpoints.</td>
+</tr>
+<tr class="even">
+<td>DataFormatter</td>
+<td><code>data_formatter.hpp</code></td>
+<td>Export-menu formatters and Find-result exporters.</td>
+</tr>
+<tr class="odd">
+<td>DataInformation</td>
+<td><code>data_information.hpp</code></td>
+<td>Register information-analysis sections.</td>
+</tr>
+<tr class="even">
+<td>DataInspector</td>
+<td><code>data_inspector.hpp</code></td>
+<td>Register Data Inspector value decoders/editors.</td>
+</tr>
+<tr class="odd">
+<td>DataProcessor</td>
+<td><code>data_processor.hpp</code></td>
+<td>Register <code>dp::Node</code> types and separators.</td>
+</tr>
+<tr class="even">
+<td>Diffing</td>
+<td><code>diffing.hpp</code></td>
+<td>Register diff algorithms.</td>
+</tr>
+<tr class="odd">
+<td>Disassemblers</td>
+<td><code>disassemblers.hpp</code></td>
+<td>Register disassembler architectures.</td>
+</tr>
+<tr class="even">
+<td>Experiments</td>
+<td><code>experiments.hpp</code></td>
+<td>Register/enable experimental features.</td>
+</tr>
+<tr class="odd">
+<td>FileTypeHandler</td>
+<td><code>file_type_handler.hpp</code></td>
+<td>Associate file extensions with open/handling callbacks.</td>
+</tr>
+<tr class="even">
+<td>Hashes</td>
+<td><code>hashes.hpp</code></td>
+<td>Register hash implementations.</td>
+</tr>
+<tr class="odd">
+<td>HexEditor</td>
+<td><code>hex_editor.hpp</code></td>
+<td>Register custom data/minimap visualizers.</td>
+</tr>
+<tr class="even">
+<td>PatternLanguage</td>
+<td><code>pattern_language.hpp</code></td>
+<td>Pattern-language functions, types, pragmas and visualizers.</td>
+</tr>
+<tr class="odd">
+<td>Provider</td>
+<td><code>provider.hpp</code></td>
+<td>Register provider types.</td>
+</tr>
+<tr class="even">
+<td>Reports</td>
+<td><code>reports.hpp</code></td>
+<td>Register report generators.</td>
+</tr>
+<tr class="odd">
+<td>Settings</td>
+<td><code>settings.hpp</code></td>
+<td>Settings UI widgets, read/write and change/save callbacks.</td>
+</tr>
+<tr class="even">
+<td>Tools</td>
+<td><code>tools.hpp</code></td>
+<td>Register tools.</td>
+</tr>
+<tr class="odd">
+<td>UserInterface</td>
+<td><code>user_interface.hpp</code></td>
+<td>Menus, toolbar, sidebar, title-bar and welcome-screen
+extensions.</td>
+</tr>
+<tr class="even">
+<td>Views</td>
+<td><code>views.hpp</code></td>
+<td>Register custom <code>View</code> instances.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="runtime-apis">Runtime APIs</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Namespace</th>
+<th>Header</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bookmarks</td>
+<td><code>imhex_api/bookmarks.hpp</code></td>
+<td>Add/remove bookmarks.</td>
+</tr>
+<tr class="even">
+<td>Fonts</td>
+<td><code>imhex_api/fonts.hpp</code></td>
+<td>Register/use fonts and DPI conversion.</td>
+</tr>
+<tr class="odd">
+<td>HexEditor</td>
+<td><code>imhex_api/hex_editor.hpp</code></td>
+<td>Selections, highlights, tooltips, hovering and virtual files.</td>
+</tr>
+<tr class="even">
+<td>Messaging</td>
+<td><code>imhex_api/messaging.hpp</code></td>
+<td>Register named byte-message handlers.</td>
+</tr>
+<tr class="odd">
+<td>Provider</td>
+<td><code>imhex_api/provider.hpp</code></td>
+<td>Query, create, add, open, select and remove providers.</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>imhex_api/system.hpp</code></td>
+<td>Application/window/system state, version/build info, tasks, update
+and restart/close.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="plugin-entry-points">3. Plugin entry points</h2>
+<p><strong>Header:</strong> <code>hex/plugin.hpp</code></p>
+<p>The normal plugin entry macro is:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>IMHEX_PLUGIN_SETUP<span class="op">(</span>name<span class="op">,</span> author<span class="op">,</span> description<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// registration code</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>In 1.38.1, this macro generates the exported functions ImHex expects,
+including plugin name/author/description, compatible version,
+ImGui-context setup, feature/subcommand hooks, and
+<code>initializePlugin()</code>.</p>
+<p>Minimal plugin:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/plugin.hpp&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>IMHEX_PLUGIN_SETUP<span class="op">(</span><span class="st">&quot;My Plugin&quot;</span><span class="op">,</span> <span class="st">&quot;Me&quot;</span><span class="op">,</span> <span class="st">&quot;Example plugin&quot;</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Other setup macros exposed by the header:</p>
+<ul>
+<li><code>IMHEX_PLUGIN_SETUP_BUILTIN(...)</code> — built-in plugin
+form.</li>
+<li><code>IMHEX_LIBRARY_SETUP(...)</code> — library-plugin
+initialization.</li>
+<li><code>IMHEX_PLUGIN_FEATURES</code> / feature support macros —
+compile-time plugin features.</li>
+</ul>
+<p>The generated compatibility function returns the compile-time
+<code>IMHEX_VERSION</code> value. That is one reason building against
+the matching SDK matters.</p>
+<h3 id="plugin-manager-types">Plugin-manager types</h3>
+<p><strong>Header:</strong> <code>hex/api/plugin_manager.hpp</code></p>
+<p>Important types:</p>
+<ul>
+<li><code>hex::Plugin</code> — loaded plugin instance and metadata.</li>
+<li><code>hex::PluginManager</code> — load/unload/reload and plugin
+lookup.</li>
+<li><code>hex::PluginFunctions</code> — function-pointer table used by
+the loader.</li>
+<li><code>hex::SubCommand</code> — plugin command-line entry.</li>
+<li><code>hex::Feature</code> — feature name + enabled flag.</li>
+</ul>
+<p>For ordinary plugin authors, registration through
+<code>IMHEX_PLUGIN_SETUP</code> is the normal starting point; you
+usually do not construct <code>PluginFunctions</code> yourself.</p>
+<hr />
+<h2 id="data-processor-api">4. Data Processor API</h2>
+<p>This is the subsystem most relevant to your YCbCr work.</p>
+<h3 id="dpattribute">4.1 <code>dp::Attribute</code></h3>
+<p><strong>Header:</strong>
+<code>hex/data_processor/attribute.hpp</code></p>
+<p>An attribute is a node port. It has two independent
+classifications:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Attribute<span class="op">::</span>Type <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    Integer<span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    Float<span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    Buffer</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Attribute<span class="op">::</span>IOType <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    In<span class="op">,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    Out</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Constructor:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Attribute<span class="op">(</span>IOType ioType<span class="op">,</span> Type type<span class="op">,</span> UnlocalizedString unlocalizedName<span class="op">);</span></span></code></pre></div>
+<p>Useful accessors include <code>getId()</code>,
+<code>getIOType()</code>, <code>getType()</code>,
+<code>getUnlocalizedName()</code>,
+<code>getConnectedAttributes()</code>, <code>getOutputData()</code> and
+<code>getDefaultData()</code>.</p>
+<p>A port therefore has a direction <strong>and</strong> a data type.
+This is why a Buffer connection cannot be wired directly to an Integer
+port in the Data Processor UI.</p>
+<h3 id="dpnode">4.2 <code>dp::Node</code></h3>
+<p><strong>Header:</strong> <code>hex/data_processor/node.hpp</code></p>
+<p>Construction:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Node<span class="op">(</span>UnlocalizedString unlocalizedTitle<span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>Attribute<span class="op">&gt;</span> attributes<span class="op">);</span></span></code></pre></div>
+<p>The essential method is:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> process<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<p>Optional hooks:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> reset<span class="op">();</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> store<span class="op">(</span>nlohmann<span class="op">::</span>json <span class="op">&amp;</span>j<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> load<span class="op">(</span><span class="at">const</span> nlohmann<span class="op">::</span>json <span class="op">&amp;</span>j<span class="op">);</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span><span class="op">:</span> <span class="kw">virtual</span> <span class="dt">void</span> drawNode<span class="op">();</span></span></code></pre></div>
+<p>Typed input access:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>u8<span class="op">&gt;&amp;</span> getBufferOnInput<span class="op">(</span>u32 index<span class="op">);</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> i128<span class="op">&amp;</span>            getIntegerOnInput<span class="op">(</span>u32 index<span class="op">);</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="dt">double</span><span class="op">&amp;</span>          getFloatOnInput<span class="op">(</span>u32 index<span class="op">);</span></span></code></pre></div>
+<p>Typed output setters:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setBufferOnOutput<span class="op">(</span>u32 index<span class="op">,</span> <span class="bu">std::</span>span<span class="op">&lt;</span><span class="at">const</span> u8<span class="op">&gt;</span> data<span class="op">);</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setIntegerOnOutput<span class="op">(</span>u32 index<span class="op">,</span> i128 integer<span class="op">);</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setFloatOnOutput<span class="op">(</span>u32 index<span class="op">,</span> <span class="dt">double</span> floatingPoint<span class="op">);</span></span></code></pre></div>
+<p>Other useful node facilities:</p>
+<ul>
+<li><code>throwNodeError(message)</code> — report a node error.</li>
+<li><code>setOverlayData(address, data)</code> — write overlay data
+associated with the node’s current overlay.</li>
+<li><code>Node::interrupt()</code> — interrupt processing.</li>
+<li><code>setAttributes(...)</code> — replace the attribute vector from
+a derived class.</li>
+<li><code>resetOutputData()</code> / <code>resetProcessedInputs()</code>
+— processing-state helpers.</li>
+<li><code>setPosition()</code> / <code>getPosition()</code> — graph
+position.</li>
+<li><code>store()</code> / <code>load()</code> — persist node-specific
+state.</li>
+</ul>
+<h3 id="attribute-indices">4.3 Attribute indices</h3>
+<p>A node receives an ordered <code>std::vector&lt;Attribute&gt;</code>
+in its constructor, and the typed <code>get...OnInput(index)</code> /
+<code>set...OnOutput(index)</code> methods use an attribute index. Keep
+the constructor order explicit and stable.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Node<span class="op">(</span><span class="st">&quot;Example&quot;</span><span class="op">,</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    Attribute<span class="op">(</span>In<span class="op">,</span>  Integer<span class="op">,</span> <span class="st">&quot;A&quot;</span><span class="op">),</span>   <span class="co">// 0</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    Attribute<span class="op">(</span>In<span class="op">,</span>  Integer<span class="op">,</span> <span class="st">&quot;B&quot;</span><span class="op">),</span>   <span class="co">// 1</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    Attribute<span class="op">(</span>Out<span class="op">,</span> Integer<span class="op">,</span> <span class="st">&quot;Sum&quot;</span><span class="op">)</span>  <span class="co">// 2</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">})</span></span></code></pre></div>
+<p>Then <code>getIntegerOnInput(0)</code>,
+<code>getIntegerOnInput(1)</code> and
+<code>setIntegerOnOutput(2, ...)</code> correspond to those
+positions.</p>
+<h3 id="registering-a-node-the-correct-1.38.1-api">4.4 Registering a
+node — <strong>the correct 1.38.1 API</strong></h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/data_processor.hpp</code></p>
+<p>The registry namespace in your SDK is:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>hex<span class="op">::</span>ContentRegistry<span class="op">::</span>DataProcessor</span></code></pre></div>
+<p>—not <code>ContentRegistry::DataProcessorNode</code>.</p>
+<p>Registration template:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="bu">std::</span>derived_from<span class="op">&lt;</span>dp<span class="op">::</span>Node<span class="op">&gt;</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Args<span class="op">&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> add<span class="op">(</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> UnlocalizedString <span class="op">&amp;</span>unlocalizedCategory<span class="op">,</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> UnlocalizedString <span class="op">&amp;</span>unlocalizedName<span class="op">,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    Args<span class="op">&amp;&amp;...</span> args</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span></code></pre></div>
+<p>Example:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ContentRegistry<span class="op">::</span>DataProcessor<span class="op">::</span>add<span class="op">&lt;</span>MyNode<span class="op">&gt;(</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Images&quot;</span><span class="op">,</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;My node&quot;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span></code></pre></div>
+<p>A separator can be registered with:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ContentRegistry<span class="op">::</span>DataProcessor<span class="op">::</span>addSeparator<span class="op">();</span></span></code></pre></div>
+<h3 id="complete-scalar-rgb-ycbcr-node">4.5 Complete scalar RGB → YCbCr
+node</h3>
+<p>This example uses only APIs that are present in the supplied 1.38.1
+headers:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/plugin.hpp&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/api/content_registry/data_processor.hpp&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/data_processor/node.hpp&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/data_processor/attribute.hpp&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> hex<span class="op">;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RGBToYCbCrNode <span class="kw">final</span> <span class="op">:</span> <span class="kw">public</span> dp<span class="op">::</span>Node <span class="op">{</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    RGBToYCbCrNode<span class="op">()</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span> Node<span class="op">(</span><span class="st">&quot;RGB -&gt; YCbCr&quot;</span><span class="op">,</span> <span class="op">{</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>            dp<span class="op">::</span>Attribute<span class="op">(</span>dp<span class="op">::</span>Attribute<span class="op">::</span>IOType<span class="op">::</span>In<span class="op">,</span>  dp<span class="op">::</span>Attribute<span class="op">::</span>Type<span class="op">::</span>Integer<span class="op">,</span> <span class="st">&quot;R&quot;</span><span class="op">),</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>            dp<span class="op">::</span>Attribute<span class="op">(</span>dp<span class="op">::</span>Attribute<span class="op">::</span>IOType<span class="op">::</span>In<span class="op">,</span>  dp<span class="op">::</span>Attribute<span class="op">::</span>Type<span class="op">::</span>Integer<span class="op">,</span> <span class="st">&quot;G&quot;</span><span class="op">),</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>            dp<span class="op">::</span>Attribute<span class="op">(</span>dp<span class="op">::</span>Attribute<span class="op">::</span>IOType<span class="op">::</span>In<span class="op">,</span>  dp<span class="op">::</span>Attribute<span class="op">::</span>Type<span class="op">::</span>Integer<span class="op">,</span> <span class="st">&quot;B&quot;</span><span class="op">),</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>            dp<span class="op">::</span>Attribute<span class="op">(</span>dp<span class="op">::</span>Attribute<span class="op">::</span>IOType<span class="op">::</span>Out<span class="op">,</span> dp<span class="op">::</span>Attribute<span class="op">::</span>Type<span class="op">::</span>Integer<span class="op">,</span> <span class="st">&quot;Y&quot;</span><span class="op">),</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>            dp<span class="op">::</span>Attribute<span class="op">(</span>dp<span class="op">::</span>Attribute<span class="op">::</span>IOType<span class="op">::</span>Out<span class="op">,</span> dp<span class="op">::</span>Attribute<span class="op">::</span>Type<span class="op">::</span>Integer<span class="op">,</span> <span class="st">&quot;Cb&quot;</span><span class="op">),</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>            dp<span class="op">::</span>Attribute<span class="op">(</span>dp<span class="op">::</span>Attribute<span class="op">::</span>IOType<span class="op">::</span>Out<span class="op">,</span> dp<span class="op">::</span>Attribute<span class="op">::</span>Type<span class="op">::</span>Integer<span class="op">,</span> <span class="st">&quot;Cr&quot;</span><span class="op">)</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">})</span> <span class="op">{}</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> process<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> i128 r <span class="op">=</span> getIntegerOnInput<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> i128 g <span class="op">=</span> getIntegerOnInput<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> i128 b <span class="op">=</span> getIntegerOnInput<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> i128 y  <span class="op">=</span> <span class="bu">std::</span>clamp<span class="op">&lt;</span>i128<span class="op">&gt;((</span> <span class="dv">299</span><span class="op">*</span>r <span class="op">+</span> <span class="dv">587</span><span class="op">*</span>g <span class="op">+</span> <span class="dv">114</span><span class="op">*</span>b<span class="op">)</span> <span class="op">/</span> <span class="dv">1000</span><span class="op">,</span>       <span class="dv">0</span><span class="op">,</span> <span class="dv">255</span><span class="op">);</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> i128 cb <span class="op">=</span> <span class="bu">std::</span>clamp<span class="op">&lt;</span>i128<span class="op">&gt;((-</span><span class="dv">169</span><span class="op">*</span>r <span class="op">-</span> <span class="dv">331</span><span class="op">*</span>g <span class="op">+</span> <span class="dv">500</span><span class="op">*</span>b<span class="op">)</span> <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> <span class="dv">128</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">255</span><span class="op">);</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> i128 cr <span class="op">=</span> <span class="bu">std::</span>clamp<span class="op">&lt;</span>i128<span class="op">&gt;((</span> <span class="dv">500</span><span class="op">*</span>r <span class="op">-</span> <span class="dv">419</span><span class="op">*</span>g <span class="op">-</span>  <span class="dv">81</span><span class="op">*</span>b<span class="op">)</span> <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> <span class="dv">128</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">255</span><span class="op">);</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        setIntegerOnOutput<span class="op">(</span><span class="dv">3</span><span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        setIntegerOnOutput<span class="op">(</span><span class="dv">4</span><span class="op">,</span> cb<span class="op">);</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        setIntegerOnOutput<span class="op">(</span><span class="dv">5</span><span class="op">,</span> cr<span class="op">);</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>IMHEX_PLUGIN_SETUP<span class="op">(</span><span class="st">&quot;YCbCr Example&quot;</span><span class="op">,</span> <span class="st">&quot;Your Name&quot;</span><span class="op">,</span> <span class="st">&quot;Data Processor example&quot;</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    ContentRegistry<span class="op">::</span>DataProcessor<span class="op">::</span>add<span class="op">&lt;</span>RGBToYCbCrNode<span class="op">&gt;(</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Images&quot;</span><span class="op">,</span> <span class="st">&quot;RGB -&gt; YCbCr&quot;</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>A copy of this example is included as
+<code>examples/02_scalar_ycbcr_data_processor.cpp</code>.</p>
+<h3 id="buffer-nodes">4.6 Buffer nodes</h3>
+<p>For image/file processing, Buffer ports are the relevant type:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="kw">auto</span> <span class="op">&amp;</span>input <span class="op">=</span> getBufferOnInput<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>setBufferOnOutput<span class="op">(</span><span class="dv">1</span><span class="op">,</span> input<span class="op">);</span></span></code></pre></div>
+<p><code>setBufferOnOutput</code> takes
+<code>std::span&lt;const u8&gt;</code>, so contiguous byte containers
+can be passed without inventing integer ports for every byte.</p>
+<p>Important distinction: the Data Processor API gives you bytes; it
+does <strong>not</strong> itself imply that an encoded PNG/JPEG buffer
+has already been decoded into RGB pixels. Decoding is a separate
+operation or library concern.</p>
+<hr />
+<h2 id="content-registry">5. Content Registry</h2>
+<p>The Content Registry is the main plugin-extension surface: your
+plugin registers new nodes, views, providers, menu entries, tools,
+settings, visualizers, etc.</p>
+<h3 id="registry-overview">Registry overview</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Registry</th>
+<th>Header</th>
+<th>What it extends</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BackgroundServices</td>
+<td><code>background_services.hpp</code></td>
+<td>Register periodic/background service callbacks.</td>
+</tr>
+<tr class="even">
+<td>CommandPalette</td>
+<td><code>command_palette.hpp</code></td>
+<td>Commands, handlers, query results and custom command-palette
+content.</td>
+</tr>
+<tr class="odd">
+<td>CommunicationInterface</td>
+<td><code>communication_interface.hpp</code></td>
+<td>Register JSON network endpoints.</td>
+</tr>
+<tr class="even">
+<td>DataFormatter</td>
+<td><code>data_formatter.hpp</code></td>
+<td>Export-menu formatters and Find-result exporters.</td>
+</tr>
+<tr class="odd">
+<td>DataInformation</td>
+<td><code>data_information.hpp</code></td>
+<td>Register information-analysis sections.</td>
+</tr>
+<tr class="even">
+<td>DataInspector</td>
+<td><code>data_inspector.hpp</code></td>
+<td>Register Data Inspector value decoders/editors.</td>
+</tr>
+<tr class="odd">
+<td>DataProcessor</td>
+<td><code>data_processor.hpp</code></td>
+<td>Register <code>dp::Node</code> types and separators.</td>
+</tr>
+<tr class="even">
+<td>Diffing</td>
+<td><code>diffing.hpp</code></td>
+<td>Register diff algorithms.</td>
+</tr>
+<tr class="odd">
+<td>Disassemblers</td>
+<td><code>disassemblers.hpp</code></td>
+<td>Register disassembler architectures.</td>
+</tr>
+<tr class="even">
+<td>Experiments</td>
+<td><code>experiments.hpp</code></td>
+<td>Register/enable experimental features.</td>
+</tr>
+<tr class="odd">
+<td>FileTypeHandler</td>
+<td><code>file_type_handler.hpp</code></td>
+<td>Associate file extensions with open/handling callbacks.</td>
+</tr>
+<tr class="even">
+<td>Hashes</td>
+<td><code>hashes.hpp</code></td>
+<td>Register hash implementations.</td>
+</tr>
+<tr class="odd">
+<td>HexEditor</td>
+<td><code>hex_editor.hpp</code></td>
+<td>Register custom data/minimap visualizers.</td>
+</tr>
+<tr class="even">
+<td>PatternLanguage</td>
+<td><code>pattern_language.hpp</code></td>
+<td>Pattern-language functions, types, pragmas and visualizers.</td>
+</tr>
+<tr class="odd">
+<td>Provider</td>
+<td><code>provider.hpp</code></td>
+<td>Register provider types.</td>
+</tr>
+<tr class="even">
+<td>Reports</td>
+<td><code>reports.hpp</code></td>
+<td>Register report generators.</td>
+</tr>
+<tr class="odd">
+<td>Settings</td>
+<td><code>settings.hpp</code></td>
+<td>Settings UI widgets, read/write and change/save callbacks.</td>
+</tr>
+<tr class="even">
+<td>Tools</td>
+<td><code>tools.hpp</code></td>
+<td>Register tools.</td>
+</tr>
+<tr class="odd">
+<td>UserInterface</td>
+<td><code>user_interface.hpp</code></td>
+<td>Menus, toolbar, sidebar, title-bar and welcome-screen
+extensions.</td>
+</tr>
+<tr class="even">
+<td>Views</td>
+<td><code>views.hpp</code></td>
+<td>Register custom <code>View</code> instances.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="views">5.1 Views</h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/views.hpp</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="bu">std::</span>derived_from<span class="op">&lt;</span>View<span class="op">&gt;</span> T<span class="op">,</span> <span class="kw">typename</span><span class="op">...</span> Args<span class="op">&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ContentRegistry<span class="op">::</span>Views<span class="op">::</span>add<span class="op">(</span>Args<span class="op">&amp;&amp;...</span> args<span class="op">);</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>View<span class="op">*</span> ContentRegistry<span class="op">::</span>Views<span class="op">::</span>getViewByName<span class="op">(</span><span class="at">const</span> UnlocalizedString<span class="op">&amp;);</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>View<span class="op">*</span> ContentRegistry<span class="op">::</span>Views<span class="op">::</span>getFocusedView<span class="op">();</span></span></code></pre></div>
+<p>There is also <code>setFullScreenView&lt;T&gt;(...)</code> for a
+full-screen view.</p>
+<h3 id="user-interface-registration">5.2 User interface
+registration</h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/user_interface.hpp</code></p>
+<p>The registry can extend:</p>
+<ul>
+<li>top-level main menus,</li>
+<li>menu items and separators,</li>
+<li>submenus,</li>
+<li>welcome-screen entries,</li>
+<li>footer items,</li>
+<li>toolbar items,</li>
+<li>sidebar items,</li>
+<li>title-bar buttons,</li>
+<li>welcome-screen quick settings toggles.</li>
+</ul>
+<p>Menu entries accept callbacks for execution, enabled state and
+selected state, and can be associated with a <code>View</code> and
+<code>Shortcut</code>.</p>
+<h3 id="settings">5.3 Settings</h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/settings.hpp</code></p>
+<p>Built-in setting widget classes exposed by the SDK:</p>
+<ul>
+<li><code>Checkbox</code></li>
+<li><code>SliderInteger</code></li>
+<li><code>SliderFloat</code></li>
+<li><code>SliderDataSize</code></li>
+<li><code>ColorPicker</code></li>
+<li><code>DropDown</code></li>
+<li><code>TextBox</code></li>
+<li><code>FilePicker</code></li>
+<li><code>Label</code></li>
+</ul>
+<p>The header also exposes <code>SettingsValue</code>, templated
+read/write helpers, <code>onChange(...)</code>, and
+<code>onSave(...)</code> callbacks.</p>
+<h3 id="pattern-language">5.4 Pattern Language</h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/pattern_language.hpp</code></p>
+<p>Plugins can register:</p>
+<ul>
+<li>pragmas,</li>
+<li>functions,</li>
+<li>dangerous functions,</li>
+<li>types,</li>
+<li>visualizers,</li>
+<li>inline visualizers.</li>
+</ul>
+<p>The registry also exposes the shared <code>pl::PatternLanguage</code>
+runtime and a runtime lock.</p>
+<h3 id="providers">5.5 Providers</h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/provider.hpp</code></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="bu">std::</span>derived_from<span class="op">&lt;</span>prv<span class="op">::</span>Provider<span class="op">&gt;</span> T<span class="op">&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ContentRegistry<span class="op">::</span>Provider<span class="op">::</span>add<span class="op">(</span><span class="dt">bool</span> addToList <span class="op">=</span> <span class="kw">true</span><span class="op">);</span></span></code></pre></div>
+<p>Provider registration is distinct from
+<code>ImHexApi::Provider</code>, which manages provider
+<strong>instances</strong> at runtime.</p>
+<h3 id="hex-editor-visualizers">5.6 Hex-editor visualizers</h3>
+<p><strong>Header:</strong>
+<code>hex/api/content_registry/hex_editor.hpp</code></p>
+<p>Custom visualizers derive from
+<code>ContentRegistry::HexEditor::DataVisualizer</code>. The registry
+provides <code>addDataVisualizer&lt;T&gt;(...)</code>, lookup by name,
+and minimap visualizer registration.</p>
+<hr />
+<h2 id="imhexapi-runtime-services">6. ImHexApi runtime services</h2>
+<p><code>ContentRegistry</code> adds capabilities. <code>ImHexApi</code>
+generally interacts with the <strong>currently running ImHex
+state</strong>.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>API</th>
+<th>Header</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bookmarks</td>
+<td><code>imhex_api/bookmarks.hpp</code></td>
+<td>Add/remove bookmarks.</td>
+</tr>
+<tr class="even">
+<td>Fonts</td>
+<td><code>imhex_api/fonts.hpp</code></td>
+<td>Register/use fonts and DPI conversion.</td>
+</tr>
+<tr class="odd">
+<td>HexEditor</td>
+<td><code>imhex_api/hex_editor.hpp</code></td>
+<td>Selections, highlights, tooltips, hovering and virtual files.</td>
+</tr>
+<tr class="even">
+<td>Messaging</td>
+<td><code>imhex_api/messaging.hpp</code></td>
+<td>Register named byte-message handlers.</td>
+</tr>
+<tr class="odd">
+<td>Provider</td>
+<td><code>imhex_api/provider.hpp</code></td>
+<td>Query, create, add, open, select and remove providers.</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>imhex_api/system.hpp</code></td>
+<td>Application/window/system state, version/build info, tasks, update
+and restart/close.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="current-provider">6.1 Current provider</h3>
+<p><strong>Header:</strong>
+<code>hex/api/imhex_api/provider.hpp</code></p>
+<p>Common operations:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>prv<span class="op">::</span>Provider <span class="op">*</span>ImHexApi<span class="op">::</span>Provider<span class="op">::</span>get<span class="op">();</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span>prv<span class="op">::</span>Provider<span class="op">*&gt;</span> ImHexApi<span class="op">::</span>Provider<span class="op">::</span>getProviders<span class="op">();</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ImHexApi<span class="op">::</span>Provider<span class="op">::</span>setCurrentProvider<span class="op">(</span>i64 index<span class="op">);</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>i64 ImHexApi<span class="op">::</span>Provider<span class="op">::</span>getCurrentProviderIndex<span class="op">();</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> ImHexApi<span class="op">::</span>Provider<span class="op">::</span>isValid<span class="op">();</span></span></code></pre></div>
+<p>Provider lifecycle helpers include <code>add(...)</code>,
+<code>remove(...)</code>, <code>createProvider(...)</code> and
+<code>openProvider(...)</code>.</p>
+<h3 id="hex-editor">6.2 Hex Editor</h3>
+<p><strong>Header:</strong>
+<code>hex/api/imhex_api/hex_editor.hpp</code></p>
+<p>The API can:</p>
+<ul>
+<li>get/set/clear the current selection,</li>
+<li>create static background/foreground highlights,</li>
+<li>register dynamic highlighting providers,</li>
+<li>add/remove tooltips,</li>
+<li>register hover-highlighting providers,</li>
+<li>add virtual files,</li>
+<li>query the hovered region.</li>
+</ul>
+<p><code>ProviderRegion</code> combines a <code>Region</code> with the
+associated <code>prv::Provider*</code>.</p>
+<h3 id="bookmarks">6.3 Bookmarks</h3>
+<p><strong>Header:</strong>
+<code>hex/api/imhex_api/bookmarks.hpp</code></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>u64 add<span class="op">(</span>u64 address<span class="op">,</span> <span class="dt">size_t</span> size<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>name<span class="op">,</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>comment<span class="op">,</span> <span class="dt">color_t</span> color <span class="op">=</span> <span class="bn">0x00000000</span><span class="op">);</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>u64 add<span class="op">(</span>Region region<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>name<span class="op">,</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>comment<span class="op">,</span> <span class="dt">color_t</span> color <span class="op">=</span> <span class="bn">0x00000000</span><span class="op">);</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> remove<span class="op">(</span>u64 id<span class="op">);</span></span></code></pre></div>
+<h3 id="system-api">6.4 System API</h3>
+<p><strong>Header:</strong>
+<code>hex/api/imhex_api/system.hpp</code></p>
+<p>Notable groups:</p>
+<ul>
+<li>application lifecycle: <code>closeImHex</code>,
+<code>restartImHex</code>;</li>
+<li>taskbar progress and target FPS;</li>
+<li>display/global/native scaling;</li>
+<li>theme detection;</li>
+<li>OS/GPU/OpenGL information;</li>
+<li>ImHex version, commit, branch and build time;</li>
+<li>update checks/update execution;</li>
+<li>startup tasks and migration routines;</li>
+<li>frame-rate unlock and post-processing shader.</li>
+</ul>
+<p>For version checks, <code>getImHexVersion()</code> is exposed
+directly by this API.</p>
+<hr />
+<h2 id="events-and-requests">7. Events and requests</h2>
+<p><strong>Core header:</strong>
+<code>hex/api/event_manager.hpp</code></p>
+<p>The SDK defines typed events using <code>EVENT_DEF</code> /
+<code>EVENT_DEF_NO_LOG</code>. Those macros generate event types with
+static convenience methods:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>EventType<span class="op">::</span>subscribe<span class="op">(</span>callback<span class="op">);</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>EventType<span class="op">::</span>subscribe<span class="op">(</span>token<span class="op">,</span> callback<span class="op">);</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>EventType<span class="op">::</span>unsubscribe<span class="op">(...);</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>EventType<span class="op">::</span>post<span class="op">(...);</span></span></code></pre></div>
+<p>The lower-level manager also provides templated
+<code>EventManager::subscribe&lt;E&gt;()</code>,
+<code>unsubscribe&lt;E&gt;()</code> and
+<code>post&lt;E&gt;()</code>.</p>
+<h3 id="token-based-subscription">Token-based subscription</h3>
+<p>A stable pointer can be used as a token:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> <span class="op">{</span> <span class="dt">int</span> token<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>EventProviderOpened<span class="op">::</span>subscribe<span class="op">(&amp;</span>token<span class="op">,</span> <span class="op">[](</span>prv<span class="op">::</span>Provider <span class="op">*</span>provider<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Later:</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>EventProviderOpened<span class="op">::</span>unsubscribe<span class="op">(&amp;</span>token<span class="op">);</span></span></code></pre></div>
+<h3 id="built-in-eventrequest-catalog">Built-in event/request
+catalog</h3>
+<h4 id="events_gui.hpp"><code>events_gui.hpp</code></h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EventViewOpened</td>
+<td>View*</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventViewClosed</td>
+<td>View*</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventDPIChanged</td>
+<td>float, float</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventWindowFocused</td>
+<td>bool</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventWindowClosing</td>
+<td>GLFWwindow*</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventWindowDeinitializing</td>
+<td>GLFWwindow*</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventOSThemeChanged</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventFrameBegin</td>
+<td>—</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>EventFrameEnd</td>
+<td>—</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>EventSetTaskBarIconState</td>
+<td>u32, u32, u32</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>EventImGuiElementRendered</td>
+<td>ImGuiID, const std::array&lt;float, 4&gt;&amp;</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="events_interaction.hpp"><code>events_interaction.hpp</code></h4>
+<table>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EventFileLoaded</td>
+<td>std::fs::path</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventDataChanged</td>
+<td>prv::Provider *</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventHighlightingChanged</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventRegionSelected</td>
+<td>ImHexApi::HexEditor::ProviderRegion</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventThemeChanged</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventBookmarkCreated</td>
+<td>ImHexApi::Bookmarks::Entry&amp;</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventPatchCreated</td>
+<td>const u8*, u64, const PatchKind</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventPatternEvaluating</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventPatternExecuted</td>
+<td>const std::string&amp;</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventPatternEditorChanged</td>
+<td>const std::string&amp;</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventStoreContentDownloaded</td>
+<td>const std::fs::path&amp;</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventStoreContentRemoved</td>
+<td>const std::fs::path&amp;</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventAchievementUnlocked</td>
+<td>const Achievement&amp;</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventSearchBoxClicked</td>
+<td>u32</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventFileDragged</td>
+<td>bool</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventFileDropped</td>
+<td>std::fs::path</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h4 id="events_lifecycle.hpp"><code>events_lifecycle.hpp</code></h4>
+<table>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EventImHexStartupFinished</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventCloseButtonPressed</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventImHexClosing</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventFirstLaunch</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventAnySettingChanged</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventAbnormalTermination</td>
+<td>int</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventImHexUpdated</td>
+<td>SemanticVersion, SemanticVersion</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventCrashRecovered</td>
+<td>const std::exception &amp;</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventProjectOpened</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventProjectSaved</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventNativeMessageReceived</td>
+<td>std::vector<u8></td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventRegisterImGuiTests</td>
+<td>ImGuiTestEngine*</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h4 id="events_provider.hpp"><code>events_provider.hpp</code></h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EventProviderCreated</td>
+<td>std::shared_ptr<prv::Provider></td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventProviderOpened</td>
+<td>prv::Provider *</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventProviderChanged</td>
+<td>prv::Provider <em>, prv::Provider </em></td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventProviderSaved</td>
+<td>prv::Provider *</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventProviderClosing</td>
+<td>prv::Provider <em>, bool </em></td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventProviderClosed</td>
+<td>prv::Provider *</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventProviderDeleted</td>
+<td>prv::Provider *</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventProviderDirtied</td>
+<td>prv::Provider *</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventProviderDataInserted</td>
+<td>prv::Provider *, u64, u64</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>EventProviderDataModified</td>
+<td>prv::Provider <em>, u64, u64, const u8</em></td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>EventProviderDataRemoved</td>
+<td>prv::Provider *, u64, u64</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h4 id="requests_gui.hpp"><code>requests_gui.hpp</code></h4>
+<table>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RequestOpenWindow</td>
+<td>std::string</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestUpdateWindowTitle</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestChangeTheme</td>
+<td>std::string</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestOpenPopup</td>
+<td>std::string</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestSetPostProcessingShader</td>
+<td>std::string, std::string</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h4 id="requests_interaction.hpp"><code>requests_interaction.hpp</code></h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RequestHexEditorSelectionChange</td>
+<td>ImHexApi::HexEditor::ProviderRegion</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestPatternEditorSelectionChange</td>
+<td>u32, u32</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestJumpToPattern</td>
+<td>const pl::ptrn::Pattern*</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestAddBookmark</td>
+<td>Region, std::string, std::string, color_t, u64*</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestRemoveBookmark</td>
+<td>u64</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestSetPatternLanguageCode</td>
+<td>std::string</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestTriggerPatternEvaluation</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestOpenFile</td>
+<td>std::fs::path</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestAddVirtualFile</td>
+<td>std::fs::path, std::vector<u8>, Region</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestOpenCommandPalette</td>
+<td>—</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h4 id="requests_lifecycle.hpp"><code>requests_lifecycle.hpp</code></h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RequestAddInitTask</td>
+<td>std::string, bool, std::function&lt;bool()&gt;</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestAddExitTask</td>
+<td>std::string, std::function&lt;bool()&gt;</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestCloseImHex</td>
+<td>bool</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestRestartImHex</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>RequestInitThemeHandlers</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>SendMessageToMainInstance</td>
+<td>const std::string, const std::vector<u8>&amp;</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h4 id="requests_provider.hpp"><code>requests_provider.hpp</code></h4>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event/request</th>
+<th>Parameters</th>
+<th>NO_LOG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RequestCreateProvider</td>
+<td>std::string, bool, bool, std::shared_ptr<hex::prv::Provider> *</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>RequestOpenProvider</td>
+<td>std::shared_ptr<prv::Provider></td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>MovePerProviderData</td>
+<td>prv::Provider <em>, prv::Provider </em></td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="providers-1">8. Providers</h2>
+<h3 id="provider-base-class">8.1 Provider base class</h3>
+<p><strong>Header:</strong> <code>hex/providers/provider.hpp</code></p>
+<p><code>hex::prv::Provider</code> is the abstract data-source
+interface. A custom provider must implement the fundamental
+lifecycle/capability/data methods, including:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> OpenResult open<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> close<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> isAvailable<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> isReadable<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> isWritable<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> isResizable<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> isSavable<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> readRaw<span class="op">(</span>u64 offset<span class="op">,</span> <span class="dt">void</span> <span class="op">*</span>buffer<span class="op">,</span> <span class="dt">size_t</span> size<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> writeRaw<span class="op">(</span>u64 offset<span class="op">,</span> <span class="at">const</span> <span class="dt">void</span> <span class="op">*</span>buffer<span class="op">,</span> <span class="dt">size_t</span> size<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> u64 getActualSize<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> UnlocalizedString getTypeName<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="bu">std::</span>string getName<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="at">const</span> <span class="dt">char</span> <span class="op">*</span>getIcon<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<p>The base class supplies higher-level operations around those
+primitives, including patched/overlay-aware
+<code>read</code>/<code>write</code>, resize/insert/remove,
+save/save-as, overlays, paging, base address, undo/redo, settings
+serialization and dirty-state tracking.</p>
+<h3 id="provider-registration-vs-provider-instances">8.2 Provider
+registration vs provider instances</h3>
+<p>Two APIs have intentionally different jobs:</p>
+<pre class="text"><code>ContentRegistry::Provider  -&gt; register a provider TYPE
+ImHexApi::Provider         -&gt; manage provider INSTANCES</code></pre>
+<p>That distinction is useful throughout the SDK: registries extend what
+ImHex <em>can create</em>, while <code>ImHexApi</code> talks to the
+current application state.</p>
+<h3 id="other-provider-headers">8.3 Other provider headers</h3>
+<p>The SDK also exposes buffering, overlays, in-memory/cached providers
+and undo/redo support under <code>hex/providers/</code>.</p>
+<hr />
+<h2 id="views-and-ui">9. Views and UI</h2>
+<h3 id="hexview">9.1 <code>hex::View</code></h3>
+<p><strong>Header:</strong> <code>hex/ui/view.hpp</code></p>
+<p>A view is the base abstraction for plugin windows. Important
+hooks:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> draw<span class="op">(</span>ImGuiWindowFlags extraFlags <span class="op">=</span> ImGuiWindowFlags_None<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> drawContent<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> drawAlwaysVisibleContent<span class="op">();</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> shouldDraw<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> shouldProcess<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">bool</span> hasViewMenuItemEntry<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span></code></pre></div>
+<p>Lifecycle hooks:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> onOpen<span class="op">();</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">virtual</span> <span class="dt">void</span> onClose<span class="op">();</span></span></code></pre></div>
+<p>View forms exposed by the header:</p>
+<ul>
+<li><code>View::Window</code> — normal dockable window; implement
+<code>drawContent()</code> and <code>drawHelpText()</code>.</li>
+<li><code>View::Special</code> — plugin handles special window
+drawing.</li>
+<li><code>View::Floating</code> — floating/non-dockable window.</li>
+<li><code>View::Scrolling</code> — window with scrolling behavior.</li>
+<li><code>View::Modal</code> — modal window.</li>
+<li><code>View::FullScreen</code> — full-screen view.</li>
+</ul>
+<p>Register a view with:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ContentRegistry<span class="op">::</span>Views<span class="op">::</span>add<span class="op">&lt;</span>MyView<span class="op">&gt;(</span>constructorArgs<span class="op">...);</span></span></code></pre></div>
+<h3 id="shortcuts">9.2 Shortcuts</h3>
+<p><strong>Header:</strong>
+<code>hex/api/shortcut_manager.hpp</code></p>
+<p>Shortcuts are composed from <code>Key</code> objects using
+<code>+</code>, for example the header explicitly describes forms such
+as:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>CTRL <span class="op">+</span> ALT <span class="op">+</span> Keys<span class="op">::</span>A</span></code></pre></div>
+<p><code>ShortcutManager</code> supports global shortcuts and
+view-specific shortcuts, enabled callbacks, programmatic execution,
+pause/resume, lookup and update.</p>
+<hr />
+<h2 id="managers">10. Managers</h2>
+<h3 id="taskmanager">TaskManager</h3>
+<p><strong>Header:</strong> <code>hex/api/task_manager.hpp</code></p>
+<p>Three task modes are exposed:</p>
+<ul>
+<li><code>createTask(...)</code></li>
+<li><code>createBackgroundTask(...)</code></li>
+<li><code>createBlockingTask(...)</code></li>
+</ul>
+<p>A <code>Task</code> supports progress updates, interruption,
+exception state, max value and an interrupt callback.
+<code>TaskHolder</code> is the external handle used to query or
+interrupt a running task.</p>
+<p><code>TaskManager::doLater(...)</code> and
+<code>doLaterOnce(...)</code> schedule work for deferred execution;
+<code>runWhenTasksFinished(...)</code> registers a completion
+action.</p>
+<h3 id="thememanager">ThemeManager</h3>
+<p><strong>Header:</strong> <code>hex/api/theme_manager.hpp</code></p>
+<p>Loads/applies themes, registers color/style handlers, exports the
+current theme and manages accent color.</p>
+<h3 id="projectfile">ProjectFile</h3>
+<p><strong>Header:</strong>
+<code>hex/api/project_file_manager.hpp</code></p>
+<p>Plugins can register project-file handlers and per-provider handlers,
+each with a base path, callback and <code>required</code> flag.</p>
+<h3 id="layoutmanager">LayoutManager</h3>
+<p><strong>Header:</strong> <code>hex/api/layout_manager.hpp</code></p>
+<p>Save/load layouts to files or strings, lock layouts, close views, and
+register load/store callbacks.</p>
+<h3 id="workspacemanager">WorkspaceManager</h3>
+<p><strong>Header:</strong>
+<code>hex/api/workspace_manager.hpp</code></p>
+<p>Create/switch/import/export/remove workspaces and query current/all
+workspace definitions.</p>
+<h3 id="tutorialmanager-achievementmanager">TutorialManager /
+AchievementManager</h3>
+<p>The SDK also exposes APIs to create interactive tutorials/help and
+register achievements with dependencies/progress.</p>
+<hr />
+<h2 id="localization">11. Localization</h2>
+<p><strong>Header:</strong>
+<code>hex/api/localization_manager.hpp</code></p>
+<p>Three commonly encountered types are:</p>
+<ul>
+<li><code>UnlocalizedString</code> — stores an untranslated key/string
+and accepts <code>const char*</code> or <code>std::string</code>.</li>
+<li><code>Lang</code> — resolves/localizes a string dynamically.</li>
+<li><code>LangConst</code> — compile-time hashed language key, produced
+by the <code>_lang</code> literal.</li>
+</ul>
+<p>This explains why most registry APIs take
+<code>UnlocalizedString</code> rather than plain display strings: the
+same registration surface can use localization keys.</p>
+<p>For experimental/local plugins, a plain string literal is accepted by
+<code>UnlocalizedString</code>, which is why examples such as:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ContentRegistry<span class="op">::</span>DataProcessor<span class="op">::</span>add<span class="op">&lt;</span>MyNode<span class="op">&gt;(</span><span class="st">&quot;Examples&quot;</span><span class="op">,</span> <span class="st">&quot;My node&quot;</span><span class="op">);</span></span></code></pre></div>
+<p>are valid at the type level.</p>
+<hr />
+<h2 id="cmakeplugin-build-api">12. CMake/plugin build API</h2>
+<p><strong>SDK file:</strong>
+<code>cmake/modules/ImHexPlugin.cmake</code></p>
+<p>The central macro is:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add_imhex_plugin</span>(...)</span></code></pre></div>
+<p>Arguments parsed by the 1.38.1 macro:</p>
+<pre class="text"><code>Option:
+  LIBRARY_PLUGIN
+
+Single-value:
+  NAME
+  IMHEX_VERSION
+
+Multi-value:
+  SOURCES
+  INCLUDES
+  LIBRARIES
+  FEATURES</code></pre>
+<p>For a normal external plugin, the macro creates a module library with
+suffix <code>.hexplug</code>. Library plugins use
+<code>.hexpluglib</code>. The macro sets the target to
+<strong>C++23</strong>, links <code>libimhex</code> plus ImHex
+dependencies, defines <code>IMHEX_PROJECT_NAME</code>,
+<code>IMHEX_VERSION</code> and <code>IMHEX_PLUGIN_NAME</code>, and
+configures plugin output/rpath/resource handling.</p>
+<p>The bootstrap that locates/loads this macro is supplied by the
+external plugin build/template environment; the exact macro above is
+what the SDK itself guarantees in the supplied archive.</p>
+<hr />
+<h2 id="practical-examples">13. Practical examples</h2>
+<p>The documentation package contains compilable-style source examples
+under <code>examples/</code>:</p>
+<ol type="1">
+<li><code>01_minimal_plugin.cpp</code> — plugin entry point only.</li>
+<li><code>02_scalar_ycbcr_data_processor.cpp</code> — exact 1.38.1 Data
+Processor registration and integer ports.</li>
+<li><code>03_buffer_node.cpp</code> — Buffer input/output node.</li>
+<li><code>04_event_subscription.cpp</code> — token-based event
+subscription.</li>
+<li><code>05_view_plugin.cpp</code> — register a custom
+<code>View::Window</code>.</li>
+<li><code>06_current_provider.cpp</code> — query the current provider
+through <code>ImHexApi</code>.</li>
+</ol>
+<h3 id="the-key-fix-to-our-earlier-ycbcr-attempt">The key fix to our
+earlier YCbCr attempt</h3>
+<p>For <strong>your</strong> SDK the correct include/registration pair
+is:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;hex/api/content_registry/data_processor.hpp&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>ContentRegistry<span class="op">::</span>DataProcessor<span class="op">::</span>add<span class="op">&lt;</span>MyNode<span class="op">&gt;(...);</span></span></code></pre></div>
+<p>There is no <code>hex/api/content_registry.hpp</code> file in the
+supplied 1.38.1 SDK, and the registry namespace is not
+<code>ContentRegistry::DataProcessorNode</code>.</p>
+<hr />
+<h2 id="debugging-api-version-mismatches">14. Debugging API-version
+mismatches</h2>
+<p>When an example from the internet fails to compile, verify it against
+your SDK instead of assuming the example is current.</p>
+<h3 id="missing-header">Missing header</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fd</span> content_registry ~/ImHex/sdk-install/usr/local/share/imhex/sdk/lib/libimhex/include/hex</span></code></pre></div>
+<h3 id="find-the-current-registration-namespace">Find the current
+registration namespace</h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rg</span> <span class="at">-n</span> <span class="st">&#39;namespace ContentRegistry::DataProcessor|void add\(&#39;</span>   ~/ImHex/sdk-install/usr/local/share/imhex/sdk/lib/libimhex/include/hex/api/content_registry</span></code></pre></div>
+<h3 id="find-a-class-and-all-call-sites-available-in-headers">Find a
+class and all call sites available in headers</h3>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rg</span> <span class="at">-n</span> <span class="st">&#39;class TaskManager|TaskManager::&#39;</span> <span class="st">&quot;</span><span class="va">$SDK</span><span class="st">/hex&quot;</span></span></code></pre></div>
+<h3 id="check-plugin-build-compatibility">Check plugin build
+compatibility</h3>
+<p>The plugin setup macro exposes the compile-time
+<code>IMHEX_VERSION</code> as the plugin’s compatible version. Use the
+SDK matching the ImHex binary you intend to load the plugin into.</p>
+<hr />
+<h2 id="complete-header-atlas">15. Complete header atlas</h2>
+<p>This is an index of every SDK header in the supplied bundle. The
+“notable types/events” column is mechanically extracted and is intended
+for discovery, not as a replacement for the curated sections above.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header</th>
+<th>Purpose</th>
+<th>Notable types/events</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>hex/api/achievement_manager.hpp</code></td>
+<td>Achievement registration, progress and dependencies.</td>
+<td>AchievementManager, Achievement, AchievementNode</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/background_services.hpp</code></td>
+<td>Content Registry extension point for background services.</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/command_palette.hpp</code></td>
+<td>Content Registry extension point for command palette.</td>
+<td>Type, QueryResult, Entry, Handler, ContentDisplay</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/communication_interface.hpp</code></td>
+<td>Content Registry extension point for communication interface.</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/data_formatter.hpp</code></td>
+<td>Content Registry extension point for data formatter.</td>
+<td>ExportMenuEntry, FindOccurrence, DecodeType, FindExporterEntry</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/data_information.hpp</code></td>
+<td>Content Registry extension point for data information.</td>
+<td>InformationSection</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/data_inspector.hpp</code></td>
+<td>Content Registry extension point for data inspector.</td>
+<td>NumberDisplayStyle, Entry</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/data_processor.hpp</code></td>
+<td>Content Registry extension point for data processor.</td>
+<td>Entry</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/diffing.hpp</code></td>
+<td>Content Registry extension point for diffing.</td>
+<td>DifferenceType, Algorithm</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/disassemblers.hpp</code></td>
+<td>Content Registry extension point for disassemblers.</td>
+<td>Instruction, Architecture</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/experiments.hpp</code></td>
+<td>Content Registry extension point for experiments.</td>
+<td>Experiment</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/file_type_handler.hpp</code></td>
+<td>Content Registry extension point for file type handler.</td>
+<td>Entry</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/hashes.hpp</code></td>
+<td>Content Registry extension point for hashes.</td>
+<td>Hash, Function</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/hex_editor.hpp</code></td>
+<td>Content Registry extension point for hex editor.</td>
+<td>DataVisualizer, MiniMapVisualizer</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/pattern_language.hpp</code></td>
+<td>Content Registry extension point for pattern language.</td>
+<td>FunctionDefinition, TypeDefinition, Visualizer</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/provider.hpp</code></td>
+<td>Content Registry extension point for provider.</td>
+<td>Entry</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/reports.hpp</code></td>
+<td>Content Registry extension point for reports.</td>
+<td>ReportGenerator</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/settings.hpp</code></td>
+<td>Content Registry extension point for settings.</td>
+<td>Widget, Interface, Checkbox, SliderInteger, SliderFloat,
+SliderDataSize, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/tools.hpp</code></td>
+<td>Content Registry extension point for tools.</td>
+<td>Entry</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/content_registry/user_interface.hpp</code></td>
+<td>Content Registry extension point for user interface.</td>
+<td>Icon, MainMenuItem, MenuItem, SidebarItem, TitleBarButton,
+WelcomeScreenQuickSettingsToggle</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/content_registry/views.hpp</code></td>
+<td>Content Registry extension point for views.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/event_manager.hpp</code></td>
+<td>Typed event bus, subscription, unsubscription and posting.</td>
+<td>event_name, EventId, EventBase, Event, EventManager</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/events/events_gui.hpp</code></td>
+<td>Built-in event type declarations.</td>
+<td>GLFWwindow, EventViewOpened, EventViewClosed, EventDPIChanged,
+EventWindowFocused, EventWindowClosing, …</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/events/events_interaction.hpp</code></td>
+<td>Built-in event type declarations.</td>
+<td>EventFileLoaded, EventDataChanged, EventHighlightingChanged,
+EventRegionSelected, EventThemeChanged, EventBookmarkCreated, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/events/events_lifecycle.hpp</code></td>
+<td>Built-in event type declarations.</td>
+<td>ImGuiTestEngine, EventImHexStartupFinished, EventCloseButtonPressed,
+EventImHexClosing, EventFirstLaunch, EventAnySettingChanged, …</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/events/events_provider.hpp</code></td>
+<td>Built-in event type declarations.</td>
+<td>Provider, EventProviderCreated, EventProviderOpened,
+EventProviderChanged, EventProviderSaved, EventProviderClosing, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/events/requests_gui.hpp</code></td>
+<td>Built-in request/message event declarations.</td>
+<td>RequestOpenWindow, RequestUpdateWindowTitle, RequestChangeTheme,
+RequestOpenPopup, RequestSetPostProcessingShader</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/events/requests_interaction.hpp</code></td>
+<td>Built-in request/message event declarations.</td>
+<td>RequestHexEditorSelectionChange,
+RequestPatternEditorSelectionChange, RequestJumpToPattern,
+RequestAddBookmark, RequestRemoveBookmark,
+RequestSetPatternLanguageCode, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/events/requests_lifecycle.hpp</code></td>
+<td>Built-in request/message event declarations.</td>
+<td>RequestAddInitTask, RequestAddExitTask, RequestCloseImHex,
+RequestRestartImHex, RequestInitThemeHandlers,
+SendMessageToMainInstance</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/events/requests_provider.hpp</code></td>
+<td>Built-in request/message event declarations.</td>
+<td>RequestCreateProvider, RequestOpenProvider, MovePerProviderData</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/imhex_api/bookmarks.hpp</code></td>
+<td>Runtime <code>ImHexApi</code> functions for bookmarks.</td>
+<td>Entry</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/imhex_api/fonts.hpp</code></td>
+<td>Runtime <code>ImHexApi</code> functions for fonts.</td>
+<td>ImFont, Offset, MergeFont, Font, FontDefinition</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/imhex_api/hex_editor.hpp</code></td>
+<td>Runtime <code>ImHexApi</code> functions for hex editor.</td>
+<td>Highlighting, Tooltip, ProviderRegion</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/imhex_api/messaging.hpp</code></td>
+<td>Runtime <code>ImHexApi</code> functions for messaging.</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/imhex_api/provider.hpp</code></td>
+<td>Runtime <code>ImHexApi</code> functions for provider.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/imhex_api/system.hpp</code></td>
+<td>Runtime <code>ImHexApi</code> functions for system.</td>
+<td>ImVec2, ImFontAtlas, GLFWwindow, AutoResetBase, ProgramArguments,
+InitialWindowProperties, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/layout_manager.hpp</code></td>
+<td>Persist, load and manage ImGui layouts.</td>
+<td>ImGuiTextBuffer, LayoutManager, Layout</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/localization_manager.hpp</code></td>
+<td>Localization, <code>UnlocalizedString</code>, <code>Lang</code>,
+languages.</td>
+<td>UnlocalizedString, PathEntry, LanguageDefinition, LangConst, Lang,
+std</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/plugin_manager.hpp</code></td>
+<td>Runtime plugin objects, metadata and plugin loading/management.</td>
+<td>ImGuiContext, SubCommand, Type, Feature, PluginFunctions, Plugin,
+…</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/project_file_manager.hpp</code></td>
+<td>Project-file load/store handlers, including per-provider state.</td>
+<td>Provider, ProjectFile, Handler, ProviderHandler</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/shortcut_manager.hpp</code></td>
+<td>Global/view shortcuts and key combinations.</td>
+<td>ImGuiWindow, KeyEquivalent, View, Key, Shortcut, ShortcutManager,
+…</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/task_manager.hpp</code></td>
+<td>Foreground, background and blocking tasks with
+progress/interruption.</td>
+<td>TaskHolder, TaskManager, Task, TaskInterruptor</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/theme_manager.hpp</code></td>
+<td>Theme loading, color/style handlers and accent color.</td>
+<td>ThemeManager, Style, ThemeHandler, StyleHandler</td>
+</tr>
+<tr class="even">
+<td><code>hex/api/tutorial_manager.hpp</code></td>
+<td>Interactive tutorials and contextual help.</td>
+<td>TutorialManager, Position, Tutorial, Step, Highlight, Message</td>
+</tr>
+<tr class="odd">
+<td><code>hex/api/workspace_manager.hpp</code></td>
+<td>Workspace create/switch/import/export management.</td>
+<td>WorkspaceManager, Workspace</td>
+</tr>
+<tr class="even">
+<td><code>hex/api_urls.hpp</code></td>
+<td>SDK header.</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>hex/data_processor/attribute.hpp</code></td>
+<td>Typed Data Processor input/output ports.</td>
+<td>Node, Attribute, Type, IOType</td>
+</tr>
+<tr class="even">
+<td><code>hex/data_processor/link.hpp</code></td>
+<td>Connections between Data Processor attributes.</td>
+<td>Link</td>
+</tr>
+<tr class="odd">
+<td><code>hex/data_processor/node.hpp</code></td>
+<td>Base class for Data Processor nodes.</td>
+<td>Provider, Overlay, Node, NodeError</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/auto_reset.hpp</code></td>
+<td>Helper utilities for auto reset.</td>
+<td>AutoResetBase, AutoReset</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/binary_pattern.hpp</code></td>
+<td>Binary-pattern helper.</td>
+<td>BinaryPattern, Pattern</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/concepts.hpp</code></td>
+<td>Helper utilities for concepts.</td>
+<td>always_false, ICloneable</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/crypto.hpp</code></td>
+<td>Cryptographic helper functions.</td>
+<td>Provider, AESMode, KeyLength</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/debugging.hpp</code></td>
+<td>Helper utilities for debugging.</td>
+<td>StackTraceResult</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/default_paths.hpp</code></td>
+<td>ImHex default/search paths.</td>
+<td>DefaultPath, ConfigPath, DataPath, PluginPath</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/encoding_file.hpp</code></td>
+<td>Encoding-file support.</td>
+<td>EncodingFile, Type</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/fmt.hpp</code></td>
+<td>Helper utilities for fmt.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/fs.hpp</code></td>
+<td>Filesystem helpers.</td>
+<td>DialogMode, ItemFilter</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/http_requests.hpp</code></td>
+<td>HTTP request abstraction.</td>
+<td>HttpRequest, ResultBase, Result</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/http_requests_emscripten.hpp</code></td>
+<td>Helper utilities for http requests emscripten.</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/http_requests_native.hpp</code></td>
+<td>Helper utilities for http requests native.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/keys.hpp</code></td>
+<td>Helper utilities for keys.</td>
+<td>Keys</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/literals.hpp</code></td>
+<td>Helper utilities for literals.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/logger.hpp</code></td>
+<td>Logging API.</td>
+<td>LogEntry</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/magic.hpp</code></td>
+<td>Magic/signature helpers.</td>
+<td>Provider, FoundPattern</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/menu_items.hpp</code></td>
+<td>Helper utilities for menu items.</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/opengl.hpp</code></td>
+<td>OpenGL helpers and texture/shader abstractions.</td>
+<td>Vector, Matrix, RotationSequence, MatrixElements, Shader,
+BufferType, …</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/patches.hpp</code></td>
+<td>Patch-related helpers.</td>
+<td>Provider, IPSError, PatchKind, Patches</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/scaling.hpp</code></td>
+<td>Helper utilities for scaling.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/semantic_version.hpp</code></td>
+<td>Semantic-version representation.</td>
+<td>SemanticVersion</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/tar.hpp</code></td>
+<td>TAR archive helper.</td>
+<td>mtar_t, Tar, Mode</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/types.hpp</code></td>
+<td>Core helper types.</td>
+<td>Region, NonNull</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/udp_server.hpp</code></td>
+<td>UDP server helper.</td>
+<td>UDPServer</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/utils.hpp</code></td>
+<td>Helper utilities for utils.</td>
+<td>Provider, SizeTypeImpl</td>
+</tr>
+<tr class="odd">
+<td><code>hex/helpers/utils_linux.hpp</code></td>
+<td>Helper utilities for utils linux.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/helpers/utils_macos.hpp</code></td>
+<td>Helper utilities for utils macos.</td>
+<td>GLFWwindow</td>
+</tr>
+<tr class="odd">
+<td><code>hex/plugin.hpp</code></td>
+<td>Plugin entry-point macros (<code>IMHEX_PLUGIN_SETUP</code>, library
+setup, features).</td>
+<td>PluginFunctionHelperInstantiation, PluginFeatureFunctionHelper,
+PluginSubCommandsFunctionHelper</td>
+</tr>
+<tr class="even">
+<td><code>hex/providers/buffered_reader.hpp</code></td>
+<td>Buffered reading helper for providers.</td>
+<td>ProviderReader</td>
+</tr>
+<tr class="odd">
+<td><code>hex/providers/cached_provider.hpp</code></td>
+<td>Provider caching wrapper/base.</td>
+<td>CachedProvider, Block</td>
+</tr>
+<tr class="even">
+<td><code>hex/providers/memory_provider.hpp</code></td>
+<td>In-memory provider implementation.</td>
+<td>MemoryProvider</td>
+</tr>
+<tr class="odd">
+<td><code>hex/providers/overlay.hpp</code></td>
+<td>Provider overlays.</td>
+<td>Overlay</td>
+</tr>
+<tr class="even">
+<td><code>hex/providers/provider.hpp</code></td>
+<td>Abstract data-provider interface and common provider behavior.</td>
+<td>IProviderLoadInterface, IProviderSidebarInterface,
+IProviderFilePicker, IProviderMenuItems, MenuEntry,
+IProviderDataDescription, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/providers/provider_data.hpp</code></td>
+<td>Per-provider data storage helpers.</td>
+<td>Provider, PerProvider</td>
+</tr>
+<tr class="even">
+<td><code>hex/providers/undo_redo/operations/operation.hpp</code></td>
+<td>Undo/redo API.</td>
+<td>Provider, Operation</td>
+</tr>
+<tr class="odd">
+<td><code>hex/providers/undo_redo/operations/operation_group.hpp</code></td>
+<td>Undo/redo API.</td>
+<td>OperationGroup</td>
+</tr>
+<tr class="even">
+<td><code>hex/providers/undo_redo/stack.hpp</code></td>
+<td>Undo/redo API.</td>
+<td>Provider, Stack</td>
+</tr>
+<tr class="odd">
+<td><code>hex/subcommands/subcommands.hpp</code></td>
+<td>Command-line subcommand support.</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>hex/test/test_provider.hpp</code></td>
+<td>Testing support exposed by the SDK.</td>
+<td>TestProvider</td>
+</tr>
+<tr class="odd">
+<td><code>hex/test/tests.hpp</code></td>
+<td>Testing support exposed by the SDK.</td>
+<td>Test, Tests, TestSequence, TestSequenceExecutor, ImGuiTestSequence,
+ImGuiTestSequenceExecutor</td>
+</tr>
+<tr class="even">
+<td><code>hex/ui/banner.hpp</code></td>
+<td>Banner UI helper.</td>
+<td>BannerBase, Banner</td>
+</tr>
+<tr class="odd">
+<td><code>hex/ui/imgui_imhex_extensions.h</code></td>
+<td>ImHex-specific ImGui extensions.</td>
+<td>ImGuiCustomCol, ImGuiCustomStyle, Texture, Filter, ImHexCustomData,
+Styles, …</td>
+</tr>
+<tr class="even">
+<td><code>hex/ui/popup.hpp</code></td>
+<td>Popup helpers.</td>
+<td>PopupBase, Popup</td>
+</tr>
+<tr class="odd">
+<td><code>hex/ui/toast.hpp</code></td>
+<td>Toast notifications.</td>
+<td>ToastBase, Toast</td>
+</tr>
+<tr class="even">
+<td><code>hex/ui/view.hpp</code></td>
+<td>View/window abstraction used for plugin UI.</td>
+<td>View, Window, Special, Floating, Scrolling, Modal, …</td>
+</tr>
+<tr class="odd">
+<td><code>hex/ui/widgets.hpp</code></td>
+<td>Reusable ImHex UI widgets.</td>
+<td>SearchableWidget</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="source-of-truth-note">Source-of-truth note</h2>
+<p>This guide was generated from the headers in your supplied
+<strong>ImHex 1.38.1 SDK bundle</strong>. If a future ImHex version
+disagrees with this document, the headers for that version are
+authoritative. The CSV files included with this documentation are
+intended to make version-to-version diffing easier.</p>
+</body>
+</html>
