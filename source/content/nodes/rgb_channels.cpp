@@ -148,9 +148,9 @@ namespace hex::plugin::stegoooo {
             m_image = std::move(m_pendingImage);
             m_pendingImage = { };
             m_hasPendingImage = false;
+            m_texturesDirty = true;
         }
 
-        // HINT(R5): who tells this function that a new image arrived from process()?
         void refreshTextures() {
             if (!m_texturesDirty)
                 return;
@@ -170,8 +170,7 @@ namespace hex::plugin::stegoooo {
                     ImGuiExt::Texture::Filter::Nearest
                 );
 
-                // HINT(C5): a Texture owns a GPU object. Should there ever be two owners of it?
-                m_textures[i] = texture;
+                m_textures[i] = std::move(texture);
             }
         }
 

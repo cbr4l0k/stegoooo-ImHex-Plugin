@@ -21,56 +21,50 @@
 
 namespace hex::plugin::stegoooo {
 
+    // No outputs on purpose: ImHex only runs "end nodes" (inputs but no outputs) on its own,
+    // anything with an output only runs when a node downstream reads from it
     class NodeSaveBMP : public dp::Node {
-    public:
-        NodeSaveBMP() : Node("Save as BMP", {
-            dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Image"),
-            dp::Attribute(dp::Attribute::IOType::Out, dp::Attribute::Type::Buffer, "BMP")
-        }) { }
+        public:
+            NodeSaveBMP() : Node("Save as BMP", {
+                    dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Image")
+                    }) { }
 
-        void process() override {
-            std::string error;
-            const auto image = decodeImage(this->getBufferOnInput(0), error);
-            if (!image.has_value())
-                this->throwNodeError(fmt::format("Couldn't decode the input as an image: {}", error));
+            void process() override {
+                std::string error;
+                const auto image = decodeImage(this->getBufferOnInput(0), error);
+                if (!image.has_value())
+                    this->throwNodeError(fmt::format("Couldn't decode the input as an image: {}", error));
 
-            auto bmp = encodeBMP(*image);
-            this->setBufferOnOutput(1, bmp);
+                auto bmp = encodeBMP(*image);
 
-            {
-                const std::scoped_lock lock(m_pendingMutex);
-                m_pendingBMP = std::move(bmp);
-                m_hasPending = true;
-            }
-        }
-
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-            m_pendingBMP.clear();
-            m_hasPending = true;
-        }
-
-    protected:
-        void drawNode() override {
-            {
-                const std::scoped_lock lock(m_pendingMutex);
-                if (m_hasPending) {
-                    m_bmp = std::move(m_pendingBMP);
-                    m_hasPending = false;
+                {
+                    const std::scoped_lock lock(m_pendingMutex);
+                    m_pendingBMP = std::move(bmp);
+                    m_hasPending = true;
                 }
             }
 
-            ImGuiExt::TextFormatted("BMP size: {} bytes", m_bmp.size());
 
-            ImGui::BeginDisabled(m_bmp.empty());
-            if (ImGui::Button("Save...")) {
-                hex::fs::openFileBrowser(
-                    hex::fs::DialogMode::Save,
-                    { { "Bitmap image", "bmp" } },
-                    // HINT(C4): this callback runs later, after the user picks a file. What does it need to carry with it?
-                    [](const std::fs::path &path) {
+        protected:
+            void drawNode() override {
+                {
+                    const std::scoped_lock lock(m_pendingMutex);
+                    if (m_hasPending) {
+                        m_bmp = std::move(m_pendingBMP);
+                        m_hasPending = false;
+                    }
+                }
+
+                ImGuiExt::TextFormatted("BMP size: {} bytes", m_bmp.size());
+
+                ImGui::BeginDisabled(m_bmp.empty());
+                if (ImGui::Button("Save...")) {
+                    hex::fs::openFileBrowser(
+                            hex::fs::DialogMode::Save,
+                            { { "Bitmap image", "bmp" } },
+                    [bmp=m_bmp](const std::fs::path &path) {
                         wolv::io::File file(path, wolv::io::File::Mode::Create);
-                        file.writeVector(m_bmp);
+                        file.writeVector(bmp);
                     }
                 );
             }

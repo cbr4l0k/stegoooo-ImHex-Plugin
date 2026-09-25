@@ -81,12 +81,6 @@ namespace hex::plugin::stegoooo {
             }
         }
 
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-
-            m_pendingPlanes = { };
-            m_hasPendingPlanes = true;
-        }
 
         void store(nlohmann::json &j) const override {
             j["preview"]       = u8(m_preview);

@@ -13,9 +13,8 @@ namespace hex::plugin::stegoooo {
         if (!image.isValid())
             return 0;
 
-        // HINT(T1): each pixel donates 1 bit from R, G and B (alpha is left alone). How many whole bytes is that?
-        STEGO_TODO("T1", "compute how many bytes of hidden payload the image can carry");
-        const size_t bytes = 0;
+        // One for each of the RGB channels
+        const size_t bytes = image.pixelCount() * 3 / 8;
         return bytes >= 4 ? bytes - 4 : 0;
     }
 
@@ -32,8 +31,11 @@ namespace hex::plugin::stegoooo {
         }
 
         std::vector<u8> payload;
+
+        // Place for a header to store the size of the message
         payload.reserve(message.size() + 4);
         const auto length = u32(message.size());
+        // little endian size of the payload
         for (size_t i = 0; i < 4; i += 1)
             payload.push_back(u8(length >> (i * 8)));
         payload.insert(payload.end(), message.begin(), message.end());
@@ -41,33 +43,41 @@ namespace hex::plugin::stegoooo {
         Image result = image;
         size_t bitIndex = 0;
         for (size_t pixel = 0; bitIndex < payload.size() * 8; pixel += 1) {
-            for (size_t channel = 0; channel < 3 && bitIndex < payload.size() * 8; channel += 1) {
-                const auto byte = payload[bitIndex / 8];
-                const auto bit  = (byte >> (7 - bitIndex % 8)) & 1;
-                auto &value = result.rgba[pixel * 4 + channel];
-                // HINT(T2): keep the 7 high bits of `value` untouched and replace only the lowest one with `bit`
-                STEGO_TODO("T2", "write `bit` into the least significant bit of `value`");
-                bitIndex += 1;
-            }
+          // If the image is RGBa, it ignores the alpha... just working on the
+          // color channels
+          for (size_t channel = 0; channel < 3 && bitIndex < payload.size() * 8;
+               channel += 1) {
+            const auto byte = payload[bitIndex / 8];
+            const auto bit = (byte >> (7 - bitIndex % 8)) & 1;
+            auto &value = result.rgba[pixel * 4 + channel];
+            // 0xFE => 11111110
+            // value & 0xFE =>xxxxxxx0
+            // value & 0xFE|bit => xxxxxxx{bit}
+            value = u8((value & 0xFE) | bit);
+            bitIndex += 1;
+          }
         }
 
         return result;
     }
 
     std::optional<std::vector<u8>> lsbExtract(const Image &image, std::string &error) {
-        if (!image.isValid() || image.pixelCount() * 3 < 32) {
+        if (!image.isValid()) {
+            error = "The image is not valid. Be sure to use a valid format";
+            return std::nullopt;
+        }
+        if (image.pixelCount() * 3 < 32) {
             error = "Image is too small to contain an LSB payload";
             return std::nullopt;
         }
 
-        // HINT(R1): extraction has to walk the bits in exactly the same order lsbEmbed() wrote them
         const auto readByte = [&image](size_t byteIndex) {
             u8 value = 0;
             for (size_t bit = 0; bit < 8; bit += 1) {
                 const auto bitIndex = byteIndex * 8 + bit;
                 const auto pixel    = bitIndex / 3;
                 const auto channel  = bitIndex % 3;
-                value = u8(value | ((image.rgba[pixel * 4 + channel] & 1) << bit));
+                value = u8((value << 1) | (image.rgba[pixel * 4 + channel] & 1));
             }
             return value;
         };
@@ -92,8 +102,7 @@ namespace hex::plugin::stegoooo {
         double squaredError = 0.0;
         for (size_t pixel = 0; pixel < original.pixelCount(); pixel += 1) {
             for (size_t channel = 0; channel < 3; channel += 1) {
-                // HINT(R2): what is 3 - 4 when the result has to fit in a u8?
-                const u8 difference = original.rgba[pixel * 4 + channel] - modified.rgba[pixel * 4 + channel];
+                const auto difference = double(original.rgba[pixel * 4 + channel]) -double(modified.rgba[pixel * 4 + channel]);
                 squaredError += double(difference) * double(difference);
             }
         }
@@ -106,15 +115,12 @@ namespace hex::plugin::stegoooo {
         if (error == 0.0)
             return std::numeric_limits<double>::infinity();
 
-        // HINT(T3): PSNR compares the error to the largest possible pixel value, in decibels
-        STEGO_TODO("T3", "return the PSNR in dB for 8-bit images given the MSE in `error`");
-        return 0.0;
+        return 10.0 * std::log10(255.0 * 255.0 / error);
     }
 
-    // HINT(R3): feed it two very different pictures. Does the number move?
     double ssim(const Image &original, const Image &modified) {
         const auto originalLuma = toLuma(original);
-        const auto modifiedLuma = toLuma(original);
+        const auto modifiedLuma = toLuma(modified);
         const auto windowWidth  = std::min<u32>(8, original.width);
         const auto windowHeight = std::min<u32>(8, original.height);
         constexpr double C1 = (0.01 * 255.0) * (0.01 * 255.0);

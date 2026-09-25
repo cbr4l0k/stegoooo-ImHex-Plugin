@@ -6,7 +6,7 @@ using namespace hex::plugin::stegoooo;
 
 IMHEX_PLUGIN_SETUP("Stegoooo", "cbr4l0k", "Steganography and image analysis blocks for the Data Processor") {
     registerImageNodes();
-    registerRgbNodes();
+    registerRGBNodes();
     registerLSBNodes();
     registerMetricNodes();
     registerExportNodes();

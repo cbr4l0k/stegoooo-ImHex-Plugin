@@ -40,8 +40,7 @@ namespace hex::plugin::stegoooo {
             if (!stego.has_value())
                 this->throwNodeError(error);
 
-            // HINT(R6): hide a message, then wire this output and the cover into the PSNR node. Did anything change?
-            this->setBufferOnOutput(2, encodeBMP(*image));
+            this->setBufferOnOutput(2, encodeBMP(*stego));
             this->setIntegerOnOutput(3, capacity);
 
             {
@@ -52,12 +51,6 @@ namespace hex::plugin::stegoooo {
             }
         }
 
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-            m_pendingCapacity = 0;
-            m_pendingUsed = 0;
-            m_hasPending = true;
-        }
 
     protected:
         void drawNode() override {
@@ -104,7 +97,7 @@ namespace hex::plugin::stegoooo {
             if (!message.has_value())
                 this->throwNodeError(error);
 
-            this->setBufferOnOutput(1, message);
+            this->setBufferOnOutput(1, *message);
 
             std::string preview;
             preview.reserve(std::min<size_t>(64, message->size()));
@@ -119,12 +112,6 @@ namespace hex::plugin::stegoooo {
             }
         }
 
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-            m_pendingLength = 0;
-            m_pendingPreview.clear();
-            m_hasPending = true;
-        }
 
     protected:
         void drawNode() override {

@@ -58,6 +58,7 @@ add_imhex_plugin(
         source/content/nodes/metrics.cpp
         source/content/nodes/export.cpp
         source/content/helpers/image.cpp
+        source/content/helpers/bmp.cpp
         source/content/helpers/color_space.cpp
         source/content/helpers/stego.cpp
     INCLUDES

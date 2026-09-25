@@ -39,10 +39,10 @@ class NodeXxx : dp::Node   constructor = ordered list of dp::Attribute (the port
 content/helpers/*.cpp      plain C++ with no ImHex types: decode, color math, LSB, metrics, BMP
 ```
 
-**Images travel between nodes as encoded file bytes** (a `Buffer`). Every node decodes its input
-with `decodeImage()`. Nodes that produce an image output a **BMP**, because BMP is lossless and
-keeps every least-significant bit. PNG would work too. JPEG would not: its lossy compression wipes
-out the hidden bits.
+**Images travel between nodes as BMP file bytes** (a `Buffer`). For now, every input must be a
+**BMP**: `decodeImage()` rejects anything else with "Only BMP files are supported for now". Nodes
+that produce an image also output a BMP, because BMP is lossless and keeps every least-significant
+bit. JPEG would not work: its lossy compression wipes out the hidden bits.
 
 **The threading rule is the most important idea in this code.** ImHex runs `process()` on a
 background thread. OpenGL textures can only be created on the render thread. So `process()` puts
@@ -161,7 +161,7 @@ Add `source/content/helpers/bmp.cpp` to `SOURCES` in `CMakeLists.txt`. Heads-up:
 
 ## Stage 3: wrong results
 
-Build this graph in the Data Processor to test with. Two Load File nodes each read the same PNG
+Build this graph in the Data Processor to test with. Two Load File nodes each read the same BMP
 (the cover), and a Buffer node holds your message text.
 
 ```
@@ -224,5 +224,5 @@ Add `m_texturesDirty = true;` at the end of `collectPendingImage()`.
 ---
 
 ## Going further
-- Try hiding the message, then saving the stego image as **JPEG** in an image editor and retrieving it. LSB will not survive, and that is the reason F5 exists. F5 is the next phase.
+- Try hiding the message, then saving the stego image as **JPEG** in an image editor, converting it back to BMP, and retrieving it. LSB will not survive, and that is the reason F5 exists. F5 is the next phase.
 - Hide messages that fill 10%, 50% and 100% of the capacity, and plot PSNR against how much you hid.

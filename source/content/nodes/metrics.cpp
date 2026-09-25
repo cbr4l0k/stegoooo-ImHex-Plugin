@@ -25,7 +25,7 @@ namespace hex::plugin::stegoooo {
             dp::Attribute(dp::Attribute::IOType::Out, dp::Attribute::Type::Float,  "MSE")
         }) { }
 
-        void process() const override {
+        void process() override {
             std::string error;
             const auto original = decodeImage(this->getBufferOnInput(0), error);
             if (!original.has_value())
@@ -51,12 +51,6 @@ namespace hex::plugin::stegoooo {
             }
         }
 
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-            m_pendingPSNR = 0.0;
-            m_pendingMSE = 0.0;
-            m_hasPending = true;
-        }
 
     protected:
         void drawNode() override {
@@ -91,7 +85,7 @@ namespace hex::plugin::stegoooo {
         NodeSSIM() : Node("SSIM", {
             dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Original"),
             dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Modified"),
-            dp::Attribute(dp::Attribute::IOType::Out, dp::Attribute::Type::Double, "SSIM")
+            dp::Attribute(dp::Attribute::IOType::Out, dp::Attribute::Type::Float, "SSIM")
         }) { }
 
         void process() override {
@@ -116,11 +110,6 @@ namespace hex::plugin::stegoooo {
             }
         }
 
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-            m_pendingValue = 0.0;
-            m_hasPending = true;
-        }
 
     protected:
         void drawNode() override {

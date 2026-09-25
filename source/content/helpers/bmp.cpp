@@ -1,5 +1,6 @@
 #include <content/helpers/bmp.hpp>
 #include <content/helpers/todo.hpp>
+#include <cstddef>
 
 namespace hex::plugin::stegoooo {
 
@@ -18,9 +19,7 @@ namespace hex::plugin::stegoooo {
         if (!image.isValid())
             return bmp;
 
-        // HINT(T4): a BMP row is 3 bytes per pixel, but every row must be padded up to a multiple of 4 bytes
-        STEGO_TODO("T4", "compute the padded size of one pixel row in bytes");
-        const size_t rowSize = 0;
+        const size_t rowSize = (size_t(image.width) * 3 + 3) / 4 * 4;
         const auto dataSize = rowSize * size_t(image.height);
         const auto fileSize = size_t(54) + dataSize;
 
@@ -43,11 +42,10 @@ namespace hex::plugin::stegoooo {
         putLE(bmp, 0, 4);
         putLE(bmp, 0, 4);
 
-        // HINT(R4): open the output in an image viewer. Is it the right way up? What does a positive biHeight mean?
-        for (u32 y = 0; y < image.height; y += 1) {
+        for (u32 y = image.height; y > 0; y -= 1) {
             const auto rowStart = bmp.size();
             for (u32 x = 0; x < image.width; x += 1) {
-                const auto offset = (size_t(y) * image.width + x) * 4;
+                const auto offset = (size_t(y - 1) * image.width + x) * 4;
                 bmp.push_back(image.rgba[offset + 2]);
                 bmp.push_back(image.rgba[offset + 1]);
                 bmp.push_back(image.rgba[offset + 0]);
