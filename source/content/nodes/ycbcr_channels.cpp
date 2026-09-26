@@ -129,7 +129,7 @@ namespace hex::plugin::stegoooo {
         constexpr static int DefaultPreviewHeight = 180;
         constexpr static int MinPreviewHeight     = 80;
         constexpr static int MaxPreviewHeight     = 400;
-        constexpr static float ZoomFactor         = 3.0F;
+        constexpr static float ZoomFactor         = 5.0F;
 
         void collectPendingPlanes() {
             const std::scoped_lock lock(m_pendingMutex);

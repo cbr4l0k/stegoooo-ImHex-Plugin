@@ -64,6 +64,10 @@ namespace hex::plugin::stegoooo {
                 this->throwNodeError(fmt::format("Couldn't decode the input as an image: {}", error));
 
             std::array<std::vector<u8>, 3> channels;
+
+            for (auto& channel : channels)
+                 channel.reserve(image->pixelCount());
+
             for (size_t pixel = 0; pixel < image->pixelCount(); pixel += 1) {
                 for (size_t channel = 0; channel < channels.size(); channel += 1)
                     channels[channel].push_back(image->rgba[pixel * 4 + channel]);
@@ -81,13 +85,6 @@ namespace hex::plugin::stegoooo {
                 m_pendingImage = std::move(*image);
                 m_hasPendingImage = true;
             }
-        }
-
-        void reset() override {
-            const std::scoped_lock lock(m_pendingMutex);
-
-            m_pendingImage = { };
-            m_hasPendingImage = true;
         }
 
         void store(nlohmann::json &j) const override {
@@ -137,7 +134,7 @@ namespace hex::plugin::stegoooo {
         constexpr static int DefaultPreviewHeight = 180;
         constexpr static int MinPreviewHeight     = 80;
         constexpr static int MaxPreviewHeight     = 400;
-        constexpr static float ZoomFactor         = 3.0F;
+        constexpr static float ZoomFactor         = 5.0F;
 
         void collectPendingImage() {
             const std::scoped_lock lock(m_pendingMutex);
