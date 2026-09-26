@@ -11,4 +11,5 @@ IMHEX_PLUGIN_SETUP("Stegoooo", "cbr4l0k", "Steganography and image analysis bloc
     registerF5Nodes();
     registerMetricNodes();
     registerExportNodes();
+    registerRandomNodes();
 }

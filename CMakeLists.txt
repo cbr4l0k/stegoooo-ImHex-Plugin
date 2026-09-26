@@ -58,6 +58,7 @@ add_imhex_plugin(
         source/content/nodes/f5.cpp
         source/content/nodes/metrics.cpp
         source/content/nodes/export.cpp
+        source/content/nodes/random.cpp
         source/content/helpers/image.cpp
         source/content/helpers/bmp.cpp
         source/content/helpers/color_space.cpp

@@ -8,5 +8,6 @@ namespace hex::plugin::stegoooo {
     void registerF5Nodes();
     void registerMetricNodes();
     void registerExportNodes();
+    void registerRandomNodes();
 
 }
