@@ -55,12 +55,14 @@ add_imhex_plugin(
         source/content/nodes/ycbcr_channels.cpp
         source/content/nodes/rgb_channels.cpp
         source/content/nodes/lsb.cpp
+        source/content/nodes/f5.cpp
         source/content/nodes/metrics.cpp
         source/content/nodes/export.cpp
         source/content/helpers/image.cpp
         source/content/helpers/bmp.cpp
         source/content/helpers/color_space.cpp
         source/content/helpers/stego.cpp
+        source/content/helpers/f5.cpp
     INCLUDES
         include
 )
