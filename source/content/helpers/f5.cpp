@@ -372,6 +372,7 @@ namespace hex::plugin::stegoooo {
         }
 
         [[nodiscard]] u64 passwordSeed(const std::string &password) {
+            // https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
             u64 hash = 14695981039346656037ULL;
             for (const auto value : password) {
                 hash ^= u8(value);
