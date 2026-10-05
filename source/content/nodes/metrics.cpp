@@ -2,6 +2,7 @@
 
 #include <content/helpers/image.hpp>
 #include <content/helpers/stego.hpp>
+#include <content/helpers/wav.hpp>
 
 #include <hex/api/content_registry/data_processor.hpp>
 #include <hex/data_processor/attribute.hpp>
@@ -13,12 +14,52 @@
 #include <cmath>
 #include <mutex>
 #include <string>
+#include <utility>
 
 namespace hex::plugin::stegoooo {
 
-    class NodePSNR : public dp::Node {
+    // Base for nodes comparing an original and a modified cover, either both images or both WAV files
+    class NodeCoverMetric : public dp::Node {
     public:
-        NodePSNR() : Node("PSNR", {
+        using Node::Node;
+
+    protected:
+        // Decodes inputs 0 and 1 and calls `metric(original, modified)` with two Images or two Wavs
+        auto compareCovers(auto &&metric) {
+            const auto &originalData = this->getBufferOnInput(0);
+            const auto &modifiedData = this->getBufferOnInput(1);
+
+            std::string imageError, wavError;
+            if (const auto original = decodeImage(originalData, imageError); original.has_value()) {
+                const auto modified = decodeImage(modifiedData, imageError);
+                if (!modified.has_value())
+                    this->throwNodeError(fmt::format("Couldn't decode the modified image: {}", imageError));
+                if (original->width != modified->width || original->height != modified->height)
+                    this->throwNodeError("Images must have the same dimensions");
+
+                return metric(*original, *modified);
+            }
+
+            if (const auto original = decodeWav(originalData, wavError); original.has_value()) {
+                const auto modified = decodeWav(modifiedData, wavError);
+                if (!modified.has_value())
+                    this->throwNodeError(fmt::format("Couldn't decode the modified WAV: {}", wavError));
+                if (original->formatTag != modified->formatTag || original->bitsPerSample != modified->bitsPerSample ||
+                    original->channels != modified->channels || original->frameCount() != modified->frameCount())
+                    this->throwNodeError("WAV files must have the same sample format, channel count and length");
+                if (original->frameCount() == 0)
+                    this->throwNodeError("WAV files contain no samples");
+
+                return metric(*original, *modified);
+            }
+
+            this->throwNodeError(fmt::format("Original is neither a supported image ({}) nor a supported WAV ({})", imageError, wavError));
+        }
+    };
+
+    class NodePSNR : public NodeCoverMetric {
+    public:
+        NodePSNR() : NodeCoverMetric("PSNR", {
             dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Original"),
             dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Modified"),
             dp::Attribute(dp::Attribute::IOType::Out, dp::Attribute::Type::Float,  "PSNR (dB)"),
@@ -26,19 +67,9 @@ namespace hex::plugin::stegoooo {
         }) { }
 
         void process() override {
-            std::string error;
-            const auto original = decodeImage(this->getBufferOnInput(0), error);
-            if (!original.has_value())
-                this->throwNodeError(fmt::format("Couldn't decode the original image: {}", error));
-
-            const auto modified = decodeImage(this->getBufferOnInput(1), error);
-            if (!modified.has_value())
-                this->throwNodeError(fmt::format("Couldn't decode the modified image: {}", error));
-
-            if (original->width != modified->width || original->height != modified->height)
-                this->throwNodeError("Images must have the same dimensions");
-            const auto mseValue = mse(*original, *modified);
-            const auto psnrValue = psnr(*original, *modified);
+            const auto [mseValue, psnrValue] = this->compareCovers([](const auto &original, const auto &modified) {
+                return std::pair(mse(original, modified), psnr(original, modified));
+            });
 
             this->setFloatOnOutput(2, psnrValue);
             this->setFloatOnOutput(3, mseValue);
@@ -80,27 +111,18 @@ namespace hex::plugin::stegoooo {
         double m_mse = 0.0;
     };
 
-    class NodeSSIM : public dp::Node {
+    class NodeSSIM : public NodeCoverMetric {
     public:
-        NodeSSIM() : Node("SSIM", {
+        NodeSSIM() : NodeCoverMetric("SSIM", {
             dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Original"),
             dp::Attribute(dp::Attribute::IOType::In,  dp::Attribute::Type::Buffer, "Modified"),
             dp::Attribute(dp::Attribute::IOType::Out, dp::Attribute::Type::Float, "SSIM")
         }) { }
 
         void process() override {
-            std::string error;
-            const auto original = decodeImage(this->getBufferOnInput(0), error);
-            if (!original.has_value())
-                this->throwNodeError(fmt::format("Couldn't decode the original image: {}", error));
-
-            const auto modified = decodeImage(this->getBufferOnInput(1), error);
-            if (!modified.has_value())
-                this->throwNodeError(fmt::format("Couldn't decode the modified image: {}", error));
-
-            if (original->width != modified->width || original->height != modified->height)
-                this->throwNodeError("Images must have the same dimensions");
-            const auto value = ssim(*original, *modified);
+            const auto value = this->compareCovers([](const auto &original, const auto &modified) {
+                return ssim(original, modified);
+            });
             this->setFloatOnOutput(2, value);
 
             {
